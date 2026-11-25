@@ -1,0 +1,74 @@
+---
+interface Props {
+  lessonId: string;
+  prompt: string;
+  sampleKeyPoints: string[];
+}
+
+const { lessonId, prompt, sampleKeyPoints } = Astro.props;
+---
+
+<div class="sdlc-reflect-box" data-reflect-id={lessonId}>
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:0.5rem;flex-wrap:wrap;">
+    <strong>Tự giải thích bằng lời của bạn (Feynman Technique)</strong>
+    <span class="sdlc-badge" data-reflect-saved>Chưa ghi chú</span>
+  </div>
+  <p style="margin:0.5rem 0 0;font-size:0.93rem;">{prompt}</p>
+  <textarea
+    placeholder="Viết tóm tắt ngắn gọn trong 3–4 câu bằng chính ngôn từ của bạn (được tự động lưu trong trình duyệt)..."
+    data-reflect-input
+  ></textarea>
+  <div style="display:flex;gap:0.65rem;margin-top:0.65rem;flex-wrap:wrap;">
+    <button type="button" class="sdlc-btn sdlc-btn-primary" data-reflect-save>Lưu ghi chú</button>
+    <button type="button" class="sdlc-btn" data-reflect-toggle>Xem ý chính đối chiếu</button>
+  </div>
+  <div class="sdlc-reflect-sample" data-reflect-sample hidden style="margin-top:0.85rem;padding:0.85rem;border-radius:0.5rem;background:var(--sl-color-bg);border:1px solid var(--sdlc-border);">
+    <strong>Ý chính cần có để đối chiếu:</strong>
+    <ul style="margin:0.4rem 0 0 1.2rem;">
+      {sampleKeyPoints.map((pt) => <li>{pt}</li>)}
+    </ul>
+  </div>
+</div>
+
+<script>
+  import { loadProgress, saveReflection } from '../lib/progress';
+
+  document.querySelectorAll<HTMLElement>('.sdlc-reflect-box').forEach((box) => {
+    if (box.dataset.bound === '1') return;
+    box.dataset.bound = '1';
+    const lessonId = box.dataset.reflectId ?? '';
+    const input = box.querySelector<HTMLTextAreaElement>('[data-reflect-input]');
+    const saveBtn = box.querySelector<HTMLButtonElement>('[data-reflect-save]');
+    const toggleBtn = box.querySelector<HTMLButtonElement>('[data-reflect-toggle]');
+    const sample = box.querySelector<HTMLElement>('[data-reflect-sample]');
+    const badge = box.querySelector<HTMLElement>('[data-reflect-saved]');
+
+    const state = loadProgress();
+    const existing = state.reflections[lessonId];
+    if (existing && input) {
+      input.value = existing.text;
+      if (badge) {
+        badge.textContent = 'Đã lưu';
+        badge.classList.add('sdlc-badge-pass');
+      }
+    }
+
+    saveBtn?.addEventListener('click', () => {
+      if (!input) return;
+      saveReflection(lessonId, input.value.trim());
+      if (badge) {
+        const now = new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+        badge.textContent = `Đã lưu lúc ${now}`;
+        badge.classList.add('sdlc-badge-pass');
+      }
+    });
+
+    toggleBtn?.addEventListener('click', () => {
+      if (!sample) return;
+      sample.hidden = !sample.hidden;
+      if (toggleBtn) {
+        toggleBtn.textContent = sample.hidden ? 'Xem ý chính đối chiếu' : 'Ẩn ý chính đối chiếu';
+      }
+    });
+  });
+</script>

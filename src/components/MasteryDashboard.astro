@@ -1,0 +1,246 @@
+---
+import { CURRICULUM_MODULES } from '../data/curriculum';
+import { FLASHCARDS } from '../data/flashcards';
+import { AGILE_SCENARIOS } from '../data/scenarios';
+
+const modulesJson = JSON.stringify(CURRICULUM_MODULES);
+const totalFlashcards = FLASHCARDS.length;
+const scenarioOptimalMap = JSON.stringify(
+  Object.fromEntries(
+    AGILE_SCENARIOS.map((sc) => [sc.id, sc.choices.findIndex((c) => c.verdict === 'optimal')])
+  )
+);
+const totalScenarios = AGILE_SCENARIOS.length;
+---
+
+<div
+  class="sdlc-widget sdlc-dashboard"
+  data-modules={modulesJson}
+  data-total-fc={totalFlashcards}
+  data-scenarios-optimal={scenarioOptimalMap}
+  data-total-scenarios={totalScenarios}
+>
+  <div class="sdlc-widget-header">
+    <div>
+      <h3 class="sdlc-widget-title">Tổng quan Mức độ Thành thạo (Toàn khóa)</h3>
+      <p style="margin:0.3rem 0 0;font-size:0.88rem;opacity:0.85;">
+        Mỗi bài học và bài thi cần đạt Quiz ≥ 80% để được tính là Thành thạo. Toàn bộ dữ liệu (Quiz, Flashcard, 12 Tình huống, Ghi chú & Rubric) lưu cục bộ và sao lưu chung trong 1 file JSON.
+      </p>
+    </div>
+    <span class="sdlc-badge" data-dash-summary>0 / {CURRICULUM_MODULES.length} thành thạo</span>
+  </div>
+
+  <div class="sdlc-progress-track" style="margin-bottom:1.25rem;">
+    <div class="sdlc-progress-fill" data-dash-bar style="width: 0%;"></div>
+  </div>
+
+  <div class="sdlc-dash-kpis">
+    <div class="sdlc-kpi">
+      <div class="sdlc-kpi-num" data-kpi-mastery>0%</div>
+      <div class="sdlc-kpi-label">Tiến độ thành thạo chung</div>
+    </div>
+    <div class="sdlc-kpi">
+      <div class="sdlc-kpi-num" data-kpi-scenarios>0/{totalScenarios}</div>
+      <div class="sdlc-kpi-label">Tình huống Agile tối ưu</div>
+    </div>
+    <div class="sdlc-kpi">
+      <div class="sdlc-kpi-num" data-kpi-fc-due>{totalFlashcards}</div>
+      <div class="sdlc-kpi-label">Flashcard đến hạn hôm nay</div>
+    </div>
+    <div class="sdlc-kpi">
+      <div class="sdlc-kpi-num" data-kpi-reflections>0</div>
+      <div class="sdlc-kpi-label">Ghi chú tự giải thích</div>
+    </div>
+  </div>
+
+  <div style="overflow-x:auto;margin-top:1.25rem;">
+    <table>
+      <thead>
+        <tr>
+          <th>Nhóm</th>
+          <th>Module</th>
+          <th>Trạng thái</th>
+          <th>Điểm cao nhất</th>
+          <th>Lần làm</th>
+        </tr>
+      </thead>
+      <tbody data-dash-rows></tbody>
+    </table>
+  </div>
+
+  <div class="sdlc-dash-backup">
+    <strong>Sao lưu & Khôi phục tiến độ (bao gồm Quiz, Flashcard, Tình huống, Ghi chú & Rubric)</strong>
+    <div style="display:flex;gap:0.65rem;flex-wrap:wrap;margin-top:0.65rem;">
+      <button type="button" class="sdlc-btn sdlc-btn-primary" data-dash-export>Xuất tiến độ (.json)</button>
+      <label class="sdlc-btn" style="cursor:pointer;">
+        Nhập file tiến độ (.json)
+        <input type="file" accept=".json,application/json" data-dash-import hidden />
+      </label>
+      <button type="button" class="sdlc-btn" data-dash-reset style="color:var(--sdlc-danger);border-color:var(--sdlc-danger);">
+        Xóa toàn bộ tiến độ
+      </button>
+    </div>
+    <div data-dash-msg style="margin-top:0.5rem;font-size:0.88rem;"></div>
+  </div>
+</div>
+
+<style>
+  .sdlc-dash-kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+    gap: 0.85rem;
+  }
+  .sdlc-kpi {
+    padding: 1rem;
+    border-radius: 0.65rem;
+    border: 1px solid var(--sdlc-border);
+    background: var(--sl-color-bg);
+    text-align: center;
+  }
+  .sdlc-kpi-num {
+    font-size: 1.55rem;
+    font-weight: 800;
+    color: var(--sl-color-accent);
+  }
+  .sdlc-kpi-label {
+    font-size: 0.83rem;
+    opacity: 0.85;
+    margin-top: 0.2rem;
+  }
+  .sdlc-dash-backup {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--sdlc-border);
+  }
+</style>
+
+<script>
+  import {
+    loadProgress,
+    exportProgressJson,
+    importProgressJson,
+    resetProgress,
+  } from '../lib/progress';
+  import type { ModuleMeta } from '../data/curriculum';
+
+  const LEVEL_LABEL: Record<number, string> = {
+    1: 'Cấp 1',
+    2: 'Cấp 2',
+    3: 'Agile/Scrum',
+    4: 'Cấp 4',
+  };
+
+  document.querySelectorAll<HTMLElement>('.sdlc-dashboard').forEach((root) => {
+    if (root.dataset.bound === '1') return;
+    root.dataset.bound = '1';
+
+    const modules: ModuleMeta[] = JSON.parse(root.dataset.modules || '[]');
+    const totalFc = Number(root.dataset.totalFc || '0');
+    const optimalMap: Record<string, number> = JSON.parse(root.dataset.scenariosOptimal || '{}');
+    const totalScenarios = Number(root.dataset.totalScenarios || '0');
+
+    const summaryEl = root.querySelector<HTMLElement>('[data-dash-summary]');
+    const barEl = root.querySelector<HTMLElement>('[data-dash-bar]');
+    const kpiMastery = root.querySelector<HTMLElement>('[data-kpi-mastery]');
+    const kpiScenarios = root.querySelector<HTMLElement>('[data-kpi-scenarios]');
+    const kpiDue = root.querySelector<HTMLElement>('[data-kpi-fc-due]');
+    const kpiRefl = root.querySelector<HTMLElement>('[data-kpi-reflections]');
+    const rowsEl = root.querySelector<HTMLElement>('[data-dash-rows]');
+    const msgEl = root.querySelector<HTMLElement>('[data-dash-msg]');
+
+    const render = () => {
+      const state = loadProgress();
+      let passedCount = 0;
+
+      const html = modules
+        .map((m) => {
+          const rec = state.quizzes[m.quizId];
+          let badge = '<span class="sdlc-badge">Chưa làm</span>';
+          let scoreText = '—';
+          let attemptsText = '0';
+
+          if (rec) {
+            const pct = Math.round((rec.bestScore / rec.total) * 100);
+            scoreText = `${rec.bestScore}/${rec.total} (${pct}%)`;
+            attemptsText = String(rec.attempts);
+            if (rec.passed) {
+              passedCount++;
+              badge = '<span class="sdlc-badge sdlc-badge-pass">Thành thạo</span>';
+            } else {
+              badge = '<span class="sdlc-badge sdlc-badge-warn">Cần ôn lại</span>';
+            }
+          }
+
+          return `<tr>
+            <td><span class="sdlc-badge">${LEVEL_LABEL[m.level] ?? `Cấp ${m.level}`}</span></td>
+            <td><a href="${m.slug}">${m.title}</a></td>
+            <td>${badge}</td>
+            <td>${scoreText}</td>
+            <td>${attemptsText}</td>
+          </tr>`;
+        })
+        .join('');
+
+      if (rowsEl) rowsEl.innerHTML = html;
+
+      const pct = modules.length ? Math.round((passedCount / modules.length) * 100) : 0;
+      if (summaryEl) summaryEl.textContent = `${passedCount} / ${modules.length} thành thạo`;
+      if (barEl) {
+        barEl.style.width = `${pct}%`;
+        barEl.classList.toggle('is-mastered', pct === 100);
+      }
+      if (kpiMastery) kpiMastery.textContent = `${pct}%`;
+
+      let optimalScenarios = 0;
+      Object.entries(optimalMap).forEach(([id, optIdx]) => {
+        if (state.scenarios[id] === optIdx) optimalScenarios++;
+      });
+      if (kpiScenarios) kpiScenarios.textContent = `${optimalScenarios}/${totalScenarios}`;
+
+      const now = Date.now();
+      const reviewedIds = Object.keys(state.flashcards);
+      let notDueCount = 0;
+      reviewedIds.forEach((id) => {
+        if (state.flashcards[id].nextReviewAt > now) notDueCount++;
+      });
+      const dueCount = Math.max(0, totalFc - notDueCount);
+      if (kpiDue) kpiDue.textContent = String(dueCount);
+
+      const reflCount = Object.values(state.reflections).filter((r) => r.text.trim().length > 0).length;
+      if (kpiRefl) kpiRefl.textContent = String(reflCount);
+    };
+
+    root.querySelector<HTMLButtonElement>('[data-dash-export]')?.addEventListener('click', () => {
+      const json = exportProgressJson();
+      const blob = new Blob([json], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `sdlc-academy-progress-${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      if (msgEl) msgEl.textContent = 'Đã tải xuống file sao lưu đầy đủ toàn bộ tiến độ.';
+    });
+
+    root.querySelector<HTMLInputElement>('[data-dash-import]')?.addEventListener('change', async (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0];
+      if (!file) return;
+      const text = await file.text();
+      const res = importProgressJson(text);
+      if (msgEl) {
+        msgEl.textContent = res.ok ? 'Đã khôi phục toàn bộ tiến độ thành công!' : `Lỗi: ${res.error}`;
+      }
+      render();
+    });
+
+    root.querySelector<HTMLButtonElement>('[data-dash-reset]')?.addEventListener('click', () => {
+      if (!window.confirm('Bạn có chắc muốn xóa toàn bộ điểm quiz, flashcard, 12 tình huống và ghi chú đã lưu?')) return;
+      resetProgress();
+      if (msgEl) msgEl.textContent = 'Đã đặt lại toàn bộ tiến độ về ban đầu.';
+      render();
+    });
+
+    window.addEventListener('sdlc-progress-updated', render);
+    render();
+  });
+</script>

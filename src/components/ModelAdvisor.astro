@@ -1,0 +1,184 @@
+<div class="sdlc-widget sdlc-advisor">
+  <div class="sdlc-widget-header">
+    <div>
+      <h3 class="sdlc-widget-title">Công cụ luyện tập: Chọn Mô hình SDLC theo Đặc thù Dự án</h3>
+      <p style="margin:0.35rem 0 0;font-size:0.88rem;opacity:0.85;">
+        Chọn 5 thuộc tính bên dưới để xem phân tích mô hình phù hợp nhất, phương án thay thế và bẫy cần tránh.
+      </p>
+    </div>
+  </div>
+
+  <div class="sdlc-adv-grid">
+    <label class="sdlc-adv-field">
+      <span>1. Độ rõ ràng & ổn định của yêu cầu</span>
+      <select data-adv="req">
+        <option value="stable">Rất rõ ràng, gần như không đổi</option>
+        <option value="evolving" selected>Rõ phần lõi, chi tiết sẽ chỉnh dần</option>
+        <option value="unclear">Mơ hồ, khách hàng cần thấy mẫu mới biết</option>
+        <option value="reactive">Phát sinh liên tục hằng ngày, khó dự báo</option>
+      </select>
+    </label>
+
+    <label class="sdlc-adv-field">
+      <span>2. Mức độ rủi ro kỹ thuật / an toàn</span>
+      <select data-adv="risk">
+        <option value="low" selected>Thấp – công nghệ quen thuộc</option>
+        <option value="safety">Rất cao về tuân thủ an toàn & bằng chứng kiểm thử</option>
+        <option value="tech">Rất cao về công nghệ mới, chưa từng làm</option>
+      </select>
+    </label>
+
+    <label class="sdlc-adv-field">
+      <span>3. Ràng buộc hợp đồng / tài liệu / mốc thời gian</span>
+      <select data-adv="gov">
+        <option value="strict">Chặt chẽ – bắt buộc ký duyệt hồ sơ từng giai đoạn</option>
+        <option value="milestone" selected>Cần mốc ngân sách & đợt bàn giao rõ ràng</option>
+        <option value="flexible">Linh hoạt – tối ưu giá trị kinh doanh nhanh nhất</option>
+      </select>
+    </label>
+
+    <label class="sdlc-adv-field">
+      <span>4. Mức độ sẵn sàng tham gia của khách hàng / PO</span>
+      <select data-adv="cust">
+        <option value="high" selected>Cao – sẵn sàng phản hồi đều mỗi 1–2 tuần</option>
+        <option value="medium">Trung bình – chỉ họp theo từng đợt lớn</option>
+        <option value="low">Thấp – chỉ ký lúc đầu và lúc nghiệm thu cuối</option>
+      </select>
+    </label>
+
+    <label class="sdlc-adv-field">
+      <span>5. Áp lực đưa sản phẩm ra dùng sớm</span>
+      <select data-adv="speed">
+        <option value="high" selected>Cao – cần ra mắt từng phần sớm để lấy phản hồi</option>
+        <option value="low">Không gấp – ưu tiên xong trọn bộ 1 lần</option>
+      </select>
+    </label>
+  </div>
+
+  <button type="button" class="sdlc-btn sdlc-btn-primary" style="margin-top:1rem;" data-adv-run>
+    Phân tích & Đề xuất mô hình
+  </button>
+
+  <div class="sdlc-adv-result" data-adv-result hidden></div>
+</div>
+
+<style>
+  .sdlc-adv-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 0.9rem;
+  }
+  .sdlc-adv-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+  .sdlc-adv-field select {
+    padding: 0.5rem 0.65rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--sdlc-border);
+    background: var(--sl-color-bg);
+    color: var(--sl-color-text);
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+  .sdlc-adv-result {
+    margin-top: 1.15rem;
+    padding: 1.1rem 1.25rem;
+    border-radius: 0.65rem;
+    border: 1px solid var(--sl-color-accent);
+    background: var(--sl-color-bg);
+    line-height: 1.6;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.sdlc-advisor').forEach((root) => {
+    if (root.dataset.bound === '1') return;
+    root.dataset.bound = '1';
+
+    const btn = root.querySelector<HTMLButtonElement>('[data-adv-run]');
+    const resEl = root.querySelector<HTMLElement>('[data-adv-result]');
+
+    const val = (k: string) =>
+      root.querySelector<HTMLSelectElement>(`[data-adv="${k}"]`)?.value ?? '';
+
+    const analyze = () => {
+      const req = val('req');
+      const risk = val('risk');
+      const gov = val('gov');
+      const cust = val('cust');
+      const speed = val('speed');
+
+      let primary = '';
+      let backup = '';
+      let why = '';
+      let pitfall = '';
+
+      if (req === 'reactive') {
+        primary = 'Kanban';
+        backup = 'Scrumban (Kanban + các buổi rà soát định kỳ)';
+        why =
+          'Công việc phát sinh liên tục, khó đóng khung trước 2–4 tuần. Kanban trực quan hóa luồng xử lý, giới hạn WIP để chống quá tải và tối ưu thời gian hoàn thành (Lead Time).';
+        pitfall =
+          'Không đặt WIP Limit sẽ biến bảng Kanban thành danh sách việc chất đống, mất tác dụng phát hiện điểm nghẽn.';
+      } else if (risk === 'tech') {
+        primary = 'Spiral (Hướng rủi ro) kết hợp Prototype';
+        backup = 'Iterative + Technical Spikes trong Scrum';
+        why =
+          'Rủi ro công nghệ chưa từng làm đòi hỏi kiểm chứng giả thuyết sớm trước khi đầu tư quy mô lớn. Mỗi vòng Spiral buộc nhóm đánh giá rủi ro và làm bản thử nghiệm để triệt tiêu ẩn số.';
+        pitfall =
+          'Cần người có kinh nghiệm phân tích rủi ro; tránh sa đà làm quá nhiều vòng phân tích mà chậm ra sản phẩm.';
+      } else if (req === 'stable' && (risk === 'safety' || gov === 'strict')) {
+        primary = 'V-Model';
+        backup = 'Waterfall có kiểm soát Phase Gate chặt chẽ';
+        why =
+          'Yêu cầu đã ổn định và ràng buộc tuân thủ/an toàn rất cao. V-Model đảm bảo mỗi mức tài liệu đặc tả/thiết kế đều gắn chặt với một cấp độ kiểm thử và bằng chứng truy vết rõ ràng.';
+        pitfall =
+          'Nếu giữa chừng yêu cầu thay đổi lớn, chi phí cập nhật đồng bộ tài liệu và test case ở hai nhánh chữ V rất tốn kém.';
+      } else if (req === 'unclear') {
+        primary = 'Prototyping + Agile (Scrum)';
+        backup = 'Iterative / Incremental';
+        why =
+          'Khi khách hàng chưa hình dung rõ sản phẩm, cần tạo nhanh bản mẫu (throwaway prototype) để chốt nhu cầu lõi rồi triển khai từng Sprint ngắn lấy phản hồi liên tục.';
+        pitfall =
+          'Tuyệt đối không để khách hàng nhầm bản mẫu làm nhanh là sản phẩm thật rồi ép đẩy thẳng lên Production.';
+      } else if (gov === 'milestone' || cust === 'medium' || (gov === 'strict' && req === 'evolving')) {
+        primary = 'Hybrid (Quản trị mốc + Phát triển theo Scrum/Incremental)';
+        backup = 'Incremental Model';
+        why =
+          'Tổ chức cần tính dự báo về ngân sách và mốc bàn giao lớn, trong khi chi tiết nghiệp vụ vẫn cần tinh chỉnh dần. Hybrid dùng kế hoạch mốc ở tầng quản trị và các vòng Sprint ở tầng thực thi.';
+        pitfall =
+          'Tránh rơi vào "Water-Scrum-Fall" hình thức (chỉ họp Daily nhưng vẫn dồn toàn bộ kiểm thử về 2 tuần cuối).';
+      } else if (req === 'stable' && cust === 'low' && speed === 'low') {
+        primary = 'Waterfall (Thác nước)';
+        backup = 'V-Model';
+        why =
+          'Yêu cầu đã rõ, khách hàng ít tham gia trong quá trình làm và không có áp lực ra mắt sớm từng phần. Waterfall cho phép chốt phạm vi rõ ràng từ đầu và quản trị theo từng giai đoạn.';
+        pitfall =
+          'Vẫn cần tổ chức rà soát kỹ ở giai đoạn Yêu cầu và Thiết kế (Shift-Left) để tránh hiểu sai tới tận lúc bàn giao mới phát hiện.';
+      } else {
+        primary = 'Agile – Scrum (kết hợp thực hành CI/CD DevOps)';
+        backup = 'Incremental + Iterative';
+        why =
+          'Yêu cầu tiến hóa theo phản hồi, khách hàng/PO sẵn sàng đồng hành và cần đưa giá trị ra sớm. Scrum tạo nhịp độ ổn định (Sprint 1–4 tuần) để giao Increment chạy được và thích nghi nhanh.';
+        pitfall =
+          'Đừng bỏ qua Definition of Done và kỷ luật kỹ thuật (review, kiểm thử tự động), nếu không nợ kỹ thuật sẽ làm các Sprint sau chậm dần.';
+      }
+
+      if (resEl) {
+        resEl.hidden = false;
+        resEl.innerHTML = `
+          <div><span class="sdlc-badge sdlc-badge-pass">Đề xuất chính</span> <strong style="font-size:1.05rem;margin-left:0.35rem;">${primary}</strong></div>
+          <div style="margin-top:0.45rem;"><strong>Phương án thay thế:</strong> ${backup}</div>
+          <div style="margin-top:0.55rem;"><strong>Lý do phân tích:</strong> ${why}</div>
+          <div style="margin-top:0.55rem;color:var(--sdlc-warn);"><strong>Bẫy cần tránh:</strong> ${pitfall}</div>
+        `;
+      }
+    };
+
+    btn?.addEventListener('click', analyze);
+  });
+</script>

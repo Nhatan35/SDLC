@@ -1,0 +1,270 @@
+export interface FlashcardItem {
+  id: string;
+  module: string;
+  front: string;
+  back: string;
+  hint?: string;
+}
+
+export const FLASHCARDS: FlashcardItem[] = [
+  {
+    id: 'fc-m0-1',
+    module: 'M0.1 Tổng quan SDLC',
+    front: 'SDLC khác PMLC (Project Management Life Cycle) ở điểm cốt lõi nào?',
+    back: 'SDLC tập trung vào các hoạt động kỹ thuật để tạo ra sản phẩm phần mềm (yêu cầu, thiết kế, code, test, vận hành). PMLC tập trung vào quản lý dự án (phạm vi, tiến độ, chi phí, rủi ro, nhân sự) để giao sản phẩm đúng cam kết.',
+    hint: 'Một bên là "làm ra sản phẩm", một bên là "quản lý việc làm dự án".',
+  },
+  {
+    id: 'fc-m0-2',
+    module: 'M0.1 Tổng quan SDLC',
+    front: 'Quy luật "Chi phí sửa lỗi theo thời gian" (Cost of Change) trong SDLC nói điều gì?',
+    back: 'Lỗi được phát hiện càng muộn trong vòng đời (ví dụ ở Production so với giai đoạn Yêu cầu), chi phí sửa chữa càng tăng theo cấp số nhân (có thể gấp 10–100 lần) vì phải sửa lại đặc tả, thiết kế, code, test và khắc phục dữ liệu hỏng.',
+  },
+  {
+    id: 'fc-m0-3',
+    module: 'M0.1 Tổng quan SDLC',
+    front: 'Phân biệt Verification và Validation theo chuẩn ISO 12207 / ISTQB.',
+    back: 'Verification ("Building the product right"): kiểm tra sản phẩm có tuân đúng đặc tả/thiết kế không. Validation ("Building the right product"): kiểm tra sản phẩm có thực sự giải quyết đúng nhu cầu người dùng trong bối cảnh thực tế không.',
+  },
+  {
+    id: 'fc-m0-4',
+    module: 'M0.1 Tổng quan SDLC',
+    front: 'Entry Criteria và Exit Criteria của một giai đoạn SDLC dùng để làm gì?',
+    back: 'Entry Criteria là điều kiện tối thiểu phải có trước khi bắt đầu giai đoạn. Exit Criteria là điều kiện chất lượng bắt buộc phải đạt trước khi đóng giai đoạn và chuyển giao sang giai đoạn sau (chặn lỗi trôi sang bước kế tiếp).',
+  },
+  {
+    id: 'fc-m0-5',
+    module: 'M0.1 Tổng quan SDLC',
+    front: 'Vòng đời sản phẩm (Product Life Cycle) và SDLC có quan hệ như thế nào?',
+    back: 'Product Life Cycle rộng hơn: trải dài từ ý tưởng, ra mắt, tăng trưởng, bão hòa đến khi ngừng kinh doanh. Trong một Product Life Cycle có thể diễn ra nhiều chu kỳ SDLC (ra mắt v1.0, nâng cấp v2.0, v3.0...).',
+  },
+  {
+    id: 'fc-m0-6',
+    module: 'M0.2 Vai trò & Chuẩn',
+    front: 'Trong ma trận RACI, quy tắc bắt buộc đối với chữ "A" (Accountable) là gì?',
+    back: 'Mỗi công việc/đầu ra chỉ có DUY NHẤT MỘT người mang vai trò A (Accountable — chịu trách nhiệm giải trình cuối cùng và có quyền phê duyệt). Có thể có nhiều người R, C, I nhưng không được có 0 hoặc 2 người A.',
+  },
+  {
+    id: 'fc-m0-7',
+    module: 'M0.2 Vai trò & Chuẩn',
+    front: 'Phân biệt vai trò của Product Owner (PO) và Business Analyst (BA).',
+    back: 'PO chịu trách nhiệm tối đa hóa giá trị sản phẩm, ra quyết định tầm nhìn và thứ tự ưu tiên backlog (trả lời "LÀM CÁI GÌ trước và TẠI SAO"). BA chuyên sâu vào khơi gợi, phân tích, mô hình hóa, đặc tả và thẩm định chi tiết yêu cầu (trả lời chi tiết "HOẠT ĐỘNG THẾ NÀO"). Ở đội nhỏ, một người có thể kiêm cả hai.',
+  },
+  {
+    id: 'fc-m0-8',
+    module: 'M0.2 Vai trò & Chuẩn',
+    front: 'ISO/IEC/IEEE 12207:2017 chia các quy trình vòng đời phần mềm thành 4 nhóm lớn nào?',
+    back: '1) Agreement processes (Thỏa thuận/Hợp đồng), 2) Organizational Project-Enabling processes (Hỗ trợ cấp tổ chức), 3) Technical Management processes (Quản lý kỹ thuật), 4) Technical processes (Quy trình kỹ thuật trực tiếp tạo & vận hành phần mềm).',
+  },
+  {
+    id: 'fc-m0-9',
+    module: 'M0.2 Vai trò & Chuẩn',
+    front: 'QA (Quality Assurance) và QC (Quality Control) khác nhau thế nào?',
+    back: 'QA hướng quy trình, chủ động PHÒNG NGỪA lỗi (xây chuẩn, checklist, quy trình review). QC hướng sản phẩm, PHÁT HIỆN lỗi trên sản phẩm đã tạo ra (kiểm thử, kiểm tra sản phẩm). Testing là một phần của QC.',
+  },
+  {
+    id: 'fc-m1-1',
+    module: 'M1.1 Mô hình truyền thống',
+    front: 'Khi nào mô hình Waterfall (Thác nước) là lựa chọn phù hợp?',
+    back: 'Khi yêu cầu đã cực kỳ rõ ràng, ổn định, ít thay đổi; công nghệ đã quen thuộc; dự án chịu ràng buộc pháp lý/hợp đồng chặt chẽ đòi hỏi tài liệu ký duyệt đầy đủ ở từng mốc (ví dụ: phần mềm nhúng an toàn cao, hệ thống tuân thủ quy định cứng).',
+  },
+  {
+    id: 'fc-m1-2',
+    module: 'M1.1 Mô hình truyền thống',
+    front: 'Điểm mạnh cốt lõi của V-Model so với Waterfall cổ điển là gì?',
+    back: 'V-Model gắn trực tiếp từng giai đoạn thiết kế/đặc tả ở nhánh trái với một cấp kiểm thử tương ứng ở nhánh phải (Yêu cầu ↔ Acceptance Test; Kiến trúc ↔ System/Integration Test; Thiết kế chi tiết ↔ Unit Test), giúp lập kế hoạch và thiết kế test case sớm (Shift-Left).',
+  },
+  {
+    id: 'fc-m1-3',
+    module: 'M1.1 Mô hình truyền thống',
+    front: 'Phân biệt Incremental (Gia tăng) và Iterative (Lặp) bằng một ví dụ trực quan.',
+    back: 'Incremental: vẽ bức tranh Mona Lisa xong từng mảnh hoàn chỉnh (xong đầu → xong thân → xong nền). Iterative: phác thảo toàn bức tranh trước → tô màu thô → tinh chỉnh chi tiết dần cho tới khi hoàn hảo. Thực tế hiện đại thường kết hợp cả hai.',
+  },
+  {
+    id: 'fc-m1-4',
+    module: 'M1.1 Mô hình truyền thống',
+    front: 'Mô hình Spiral (Xoắn ốc) của Barry Boehm có 4 góc phần tư nào ở mỗi vòng lặp?',
+    back: '1) Xác định mục tiêu, phương án và ràng buộc; 2) Đánh giá phương án, nhận diện và giảm thiểu RỦI RO (thường làm prototype); 3) Phát triển và kiểm chứng sản phẩm của vòng đó; 4) Rà soát kết quả và lập kế hoạch cho vòng xoắn kế tiếp.',
+    hint: 'Từ khóa đặc trưng nhất của Spiral là "Risk-driven" (hướng rủi ro).',
+  },
+  {
+    id: 'fc-m1-5',
+    module: 'M1.1 Mô hình truyền thống',
+    front: 'Rủi ro lớn nhất khi dùng mô hình Prototyping (Nguyên mẫu) là gì?',
+    back: 'Khách hàng nhầm tưởng bản mẫu làm nhanh (throwaway prototype) đã là sản phẩm thật và ép đưa thẳng vào chạy thực tế, dẫn đến kiến trúc yếu, nợ kỹ thuật nặng và khó bảo trì.',
+  },
+  {
+    id: 'fc-m1-6',
+    module: 'M1.2 Agile & Hiện đại',
+    front: 'Kể tên 4 giá trị cốt lõi của Tuyên ngôn Agile (Agile Manifesto, 2001).',
+    back: '1) Cá nhân & tương tác HƠN quy trình & công cụ; 2) Phần mềm chạy được HƠN tài liệu đầy đủ; 3) Cộng tác với khách hàng HƠN đàm phán hợp đồng; 4) Phản hồi với thay đổi HƠN bám sát kế hoạch. (Lưu ý: vế phải vẫn có giá trị, chỉ là ưu tiên vế trái hơn).',
+  },
+  {
+    id: 'fc-m1-7',
+    module: 'M1.2 Agile & Hiện đại',
+    front: 'Scrum có 3 trách nhiệm, 5 sự kiện và 3 artifact nào? (Scrum Guide 2020)',
+    back: '3 trách nhiệm: Product Owner, Scrum Master, Developers. 5 sự kiện: Sprint, Sprint Planning, Daily Scrum, Sprint Review, Sprint Retrospective. 3 artifact (+ cam kết): Product Backlog (Product Goal), Sprint Backlog (Sprint Goal), Increment (Definition of Done).',
+  },
+  {
+    id: 'fc-m1-8',
+    module: 'M1.2 Agile & Hiện đại',
+    front: 'Sprint Review và Sprint Retrospective khác nhau ở điểm nào?',
+    back: 'Sprint Review kiểm tra SẢN PHẨM (Increment) cùng các bên liên quan để điều chỉnh Product Backlog. Sprint Retrospective kiểm tra QUY TRÌNH & CÁCH LÀM VIỆC nội bộ nhóm Scrum để cải tiến ở Sprint sau.',
+  },
+  {
+    id: 'fc-m1-9',
+    module: 'M1.2 Agile & Hiện đại',
+    front: 'Khi nào nên chọn Kanban thay vì Scrum?',
+    back: 'Khi công việc đến liên tục, khó dự đoán trước theo chu kỳ Sprint (như nhóm vận hành, hỗ trợ sự cố, bảo trì, xử lý yêu cầu nhỏ lẻ), ưu tiên kiểm soát luồng công việc qua WIP Limit và rút ngắn thời gian xử lý (Lead Time).',
+  },
+  {
+    id: 'fc-m1-10',
+    module: 'M1.2 Agile & Hiện đại',
+    front: 'Tại sao nhiều tổ chức lớn áp dụng mô hình Hybrid (Lai) thay vì thuần Agile hoặc thuần Waterfall?',
+    back: 'Vì cấp quản trị/hợp đồng/pháp lý cần mốc ngân sách, tiến độ và cổng phê duyệt rõ ràng (Waterfall), trong khi đội kỹ thuật cần xây dựng tính năng theo từng Sprint để nhận phản hồi sớm và giảm rủi ro sai yêu cầu (Agile).',
+  },
+  {
+    id: 'fc-m1-11',
+    module: 'M1.3 Chọn mô hình',
+    front: '5 tiêu chí cốt lõi để chọn mô hình SDLC phù hợp cho một dự án là gì?',
+    back: '1) Độ rõ ràng & mức ổn định của yêu cầu; 2) Mức độ rủi ro & tính mới của công nghệ; 3) Yêu cầu tuân thủ pháp lý/an toàn/tài liệu; 4) Mức độ tham gia sẵn sàng của khách hàng; 5) Quy mô, năng lực nhóm và áp lực thời gian ra mắt.',
+  },
+  {
+    id: 'fc-as-1',
+    module: 'AS.1 Tư duy Agile & Scrum',
+    front: '3 trụ cột của Chủ nghĩa Kinh nghiệm (Empiricism) trong Scrum là gì?',
+    back: '1) Minh bạch (Transparency): trạng thái thật của công việc và sản phẩm phải thấy rõ; 2) Thanh tra (Inspection): kiểm tra thường xuyên các artifact và tiến độ; 3) Thích nghi (Adaptation): điều chỉnh ngay khi phát hiện sai lệch.',
+  },
+  {
+    id: 'fc-as-2',
+    module: 'AS.1 Tư duy Agile & Scrum',
+    front: 'Kể tên 5 Giá trị Scrum (Scrum Values) theo Scrum Guide 2020.',
+    back: '1) Cam kết (Commitment), 2) Tập trung (Focus), 3) Cởi mở (Openness), 4) Tôn trọng (Respect), 5) Dũng cảm (Courage). Nếu thiếu 5 giá trị này, 3 trụ cột kinh nghiệm sẽ trở thành hình thức.',
+  },
+  {
+    id: 'fc-as-3',
+    module: 'AS.2 Vận hành Scrum',
+    front: 'Buổi Sprint Planning trả lời 3 chủ đề cốt lõi nào theo Scrum Guide 2020?',
+    back: 'Chủ đề 1 (Why): Tại sao Sprint này có giá trị? → Chốt Sprint Goal. Chủ đề 2 (What): Có thể làm xong những gì trong Sprint này? → Chọn hạng mục từ Product Backlog. Chủ đề 3 (How): Thực hiện công việc đó ra sao? → Developers chia việc thành kế hoạch thực thi.',
+  },
+  {
+    id: 'fc-as-4',
+    module: 'AS.2 Vận hành Scrum',
+    front: 'Ai là người duy nhất có quyền hủy (Cancel) một Sprint, và chỉ khi nào?',
+    back: 'DUY NHẤT Product Owner có thẩm quyền hủy Sprint, và chỉ khi Sprint Goal đã trở nên lỗi thời (obsolete) do bối cảnh kinh doanh hoặc công nghệ thay đổi lớn.',
+  },
+  {
+    id: 'fc-as-5',
+    module: 'AS.2 Vận hành Scrum',
+    front: 'Phân biệt Definition of Ready (DoR) và Definition of Done (DoD).',
+    back: 'DoR là tiêu chí thỏa thuận nội bộ giúp kiểm tra một Backlog Item đã đủ rõ ràng, nhỏ gọn để đưa vào Sprint Planning chưa (đầu vào). DoD là cam kết chính thức trong Scrum Guide quy định chuẩn chất lượng bắt buộc một Increment phải đạt trước khi gọi là hoàn thành (đầu ra).',
+  },
+  {
+    id: 'fc-as-6',
+    module: 'AS.2 Vận hành Scrum',
+    front: 'Product Backlog Refinement (Tinh chỉnh backlog) là gì và diễn ra khi nào?',
+    back: 'Là hoạt động liên tục xuyên suốt Sprint (không phải sự kiện cứng) nhằm chia nhỏ, làm rõ chi tiết, bổ sung tiêu chí chấp nhận và sắp xếp thứ tự cho các hạng mục ở đầu Product Backlog để sẵn sàng cho các Sprint tới.',
+  },
+  {
+    id: 'fc-as-7',
+    module: 'AS.3 User Story & Ước lượng',
+    front: 'Tiêu chí INVEST để đánh giá chất lượng một User Story gồm những chữ gì?',
+    back: 'I – Independent (Độc lập), N – Negotiable (Có thể thương lượng), V – Valuable (Mang lại giá trị), E – Estimable (Ước lượng được), S – Small (Đủ nhỏ cho 1 Sprint), T – Testable (Kiểm thử được).',
+  },
+  {
+    id: 'fc-as-8',
+    module: 'AS.3 User Story & Ước lượng',
+    front: 'Phân biệt Vertical Slicing (Cắt dọc) và Horizontal Slicing (Cắt ngang) khi chia nhỏ User Story.',
+    back: 'Vertical Slicing cắt xuyên suốt từ UI → Logic/API → DB theo từng lát cắt giá trị người dùng (cuối Sprint có phần mềm chạy được để demo). Horizontal Slicing cắt theo tầng kỹ thuật (Sprint 1 làm DB, Sprint 2 làm API...) — là phản mẫu vì tạo ra Mini-Waterfall.',
+  },
+  {
+    id: 'fc-as-9',
+    module: 'AS.3 User Story & Ước lượng',
+    front: 'Vì sao KHÔNG được quy đổi "1 Story Point = X giờ" và KHÔNG được so sánh Velocity giữa hai đội Scrum?',
+    back: 'Story Point đo độ phức tạp, khối lượng và sự bất định tương đối theo hệ quy chiếu riêng của từng đội (không phải thời gian tuyệt đối). Dùng Velocity để so sánh hoặc đặt KPI sẽ khiến đội thổi phồng điểm ước lượng mà không tạo thêm giá trị thật.',
+  },
+  {
+    id: 'fc-as-10',
+    module: 'AS.4 Tình huống Scrum',
+    front: 'Tại sao "Hardening Sprint" (Sprint riêng cuối quý để dọn bug) bị coi là một Anti-pattern?',
+    back: 'Vì nó cho thấy các Sprint trước chưa thực sự đạt Definition of Done (Increment chưa ở trạng thái có thể phát hành). Việc trì hoãn kiểm thử và sửa lỗi làm chi phí khắc phục tăng vọt và phá vỡ tính minh bạch tiến độ.',
+  },
+  {
+    id: 'fc-as-11',
+    module: 'AS.0 Agile For Dummies',
+    front: 'Tam giác Sắt Đảo ngược (Inverted Iron Triangle) trong Agile khác gì Tam giác Sắt truyền thống?',
+    back: 'Truyền thống (Waterfall) cố định Phạm vi (Scope) → Thời gian và Chi phí phải co giãn (dễ trễ hạn, đội vốn). Agile cố định Thời gian & Chi phí (nhịp Sprint và đội ổn định) + giữ chặt Chất lượng → Linh hoạt Phạm vi theo thứ tự ưu tiên giá trị cao nhất.',
+  },
+  {
+    id: 'fc-as-12',
+    module: 'AS.0 Agile For Dummies',
+    front: 'Kể tên 7 giai đoạn của "Roadmap to Value" trong Agile Project Management For Dummies (Mark C. Layton).',
+    back: '1) Product Vision → 2) Product Roadmap → 3) Release Plan → 4) Sprint Planning → 5) Daily Stand-up (Daily Scrum) → 6) Sprint Review → 7) Sprint Retrospective.',
+  },
+  {
+    id: 'fc-as-13',
+    module: 'AS.0 Agile For Dummies',
+    front: '5 Cấp độ Lập kế hoạch trong Agile (5 Levels of Agile Planning) gồm những cấp nào?',
+    back: 'Cấp 1: Product Vision (rà soát ≥ 1 lần/năm) → Cấp 2: Product Roadmap (≥ 2 lần/năm) → Cấp 3: Release Planning (thường 3–5 Sprint/đợt) → Cấp 4: Sprint Planning (mỗi 1–4 tuần) → Cấp 5: Daily Planning (mỗi ngày, ≤ 15 phút).',
+  },
+  {
+    id: 'fc-as-14',
+    module: 'AS.0 Agile For Dummies',
+    front: 'Elevator Statement (tuyên bố tầm nhìn thang máy) ở Giai đoạn 1 dùng để làm gì?',
+    back: 'Là bản tóm tắt cực ngắn (đọc xong trong thời gian đi thang máy) trả lời sản phẩm là gì, dành cho ai, giải quyết nỗi đau nào, lợi ích cốt lõi và điểm khác biệt — làm "ngôi sao Bắc Đẩu" định hướng mọi quyết định ưu tiên phạm vi.',
+  },
+  {
+    id: 'fc-as-15',
+    module: 'AS.5 Lean & Scaling',
+    front: 'Kể tên 7 loại lãng phí của Lean trong phát triển phần mềm (7 Wastes).',
+    back: '1) Công việc dở dang (Partially Done Work), 2) Tính năng thừa (Extra Features), 3) Học lại (Relearning), 4) Bàn giao nhiều tầng (Handoffs), 5) Chờ đợi (Delays), 6) Chuyển đổi ngữ cảnh (Task Switching), 7) Lỗi phần mềm (Defects).',
+  },
+  {
+    id: 'fc-c2-1',
+    module: 'M2 Lập kế hoạch',
+    front: '5 khía cạnh phân tích khả thi TELOS và công thức ước lượng PERT 3 điểm là gì?',
+    back: 'TELOS = Technical (Kỹ thuật), Economic (Kinh tế), Legal (Pháp lý), Operational (Vận hành), Schedule (Tiến độ). Công thức PERT: E = (O + 4M + P) / 6.',
+  },
+  {
+    id: 'fc-c2-2',
+    module: 'M3–M4 Yêu cầu & SRS',
+    front: 'Yêu cầu chức năng (FR), Phi chức năng (NFR) và Quy tắc nghiệp vụ (Business Rule) khác nhau thế nào?',
+    back: 'FR mô tả hệ thống LÀM GÌ; NFR (ISO 25010: hiệu năng, bảo mật, độ tin cậy, an toàn...) mô tả chất lượng vận hành; Business Rule là chính sách độc lập của tổ chức sinh ra các yêu cầu.',
+  },
+  {
+    id: 'fc-c2-3',
+    module: 'M5–M6 Mô hình hóa',
+    front: 'Khi nào chọn BPMN 2.0, Sequence Diagram, State Machine Diagram và ERD?',
+    back: 'BPMN 2.0: quy trình nghiệp vụ qua nhiều vai trò/phòng ban. Sequence: trình tự gọi API/hệ thống theo thời gian. State Machine: vòng đời trạng thái hợp lệ của 1 đối tượng. ERD: cấu trúc thực thể dữ liệu và quan hệ 1-N / N-N.',
+  },
+  {
+    id: 'fc-c2-4',
+    module: 'M7 Phát triển & CI',
+    front: 'Phân biệt Continuous Integration (CI), Continuous Delivery và Continuous Deployment.',
+    back: 'CI: tự động build & chạy test mỗi khi gộp code thường xuyên. Continuous Delivery: luôn sẵn sàng phát hành nhưng bước đẩy lên Production cần bấm nút duyệt tay. Continuous Deployment: tự động đẩy thẳng lên Production nếu mọi kiểm thử xanh.',
+  },
+  {
+    id: 'fc-c2-5',
+    module: 'M8 Kiểm thử ISTQB',
+    front: 'Phân biệt Confirmation Testing (Re-testing) và Regression Testing.',
+    back: 'Confirmation Testing kiểm tra lại đúng lỗi vừa sửa xem đã hết chưa. Regression Testing kiểm tra các chức năng xung quanh đảm bảo việc sửa code/thêm tính năng không làm hỏng phần cũ đang chạy tốt.',
+  },
+  {
+    id: 'fc-c2-6',
+    module: 'M8 Kiểm thử ISTQB',
+    front: 'Severity và Priority trong báo cáo lỗi khác nhau thế nào?',
+    back: 'Severity là mức độ tàn phá về mặt kỹ thuật/chức năng (do QA đánh giá). Priority là mức độ khẩn cấp về kinh doanh cần sửa sớm hay muộn (do PO/PM quyết định). Có thể có lỗi Low Severity nhưng High Priority (ví dụ sai chính tả tên thương hiệu trước ngày ra mắt).',
+  },
+  {
+    id: 'fc-c2-7',
+    module: 'M9–M10 Triển khai & Bảo trì',
+    front: 'Phân biệt 4 loại bảo trì phần mềm theo ISO/IEC 14764.',
+    back: '1) Corrective: sửa lỗi đang có; 2) Adaptive: thích ứng với thay đổi môi trường/trình duyệt/luật pháp; 3) Perfective: thêm tính năng hoặc tối ưu trải nghiệm; 4) Preventive: refactoring/vá bảo mật để phòng ngừa lỗi tương lai.',
+  },
+  {
+    id: 'fc-c2-8',
+    module: 'M9–M10 Triển khai & Bảo trì',
+    front: 'Phân biệt Incident và Problem trong quản trị vận hành ITIL.',
+    back: 'Incident là sự cố làm gián đoạn dịch vụ → mục tiêu khôi phục hoạt động nhanh nhất theo SLA. Problem là nguyên nhân gốc rễ (Root Cause) gây ra một hoặc nhiều sự cố lặp lại → mục tiêu xử lý tận gốc vĩnh viễn.',
+  },
+];

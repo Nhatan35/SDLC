@@ -1,0 +1,87 @@
+---
+title: "Bài tập Agile & Scrum (LibCore) + Thử thách Tìm lỗi (Spot-the-Flaw)"
+description: "Thực hành lập Product Vision, Release Plan, viết User Story chuẩn INVEST + Given/When/Then, cắt dọc Vertical Slicing cho LibCore và tự tìm 6 lỗi ẩn trong tài liệu Agile mẫu."
+---
+
+import Checklist from '../../../components/Checklist.astro';
+
+:::note[Cách làm bài để nhớ lâu nhất]
+Tự viết câu trả lời ra giấy/file ghi chú trong **30 phút** trước khi mở phần **Đáp án mẫu** ở cuối trang. Đặc biệt đừng bỏ qua **Phần B (Thử thách Tìm lỗi)** — soi lỗi sai của người khác là cách nhanh nhất để bạn không bao giờ mắc lỗi đó!
+:::
+
+## Phần A: Thực hành Agile & Scrum trên Dự án Thư viện LibCore
+
+### Nhiệm vụ 1: Viết Product Vision & Release Plan (theo *Agile For Dummies*)
+Dựa trên [bối cảnh dự án LibCore](/du-an-mo-phong/tong-quan-thu-vien/):
+1. Viết lại ngắn gọn **Release Goal** cho **Release 1 (tháng 4 — 4 Sprint x 2 tuần)** và **Release 2 (tháng 6 — 3 Sprint x 2 tuần)**.
+2. Đề xuất **4 tiêu chí cốt lõi** trong bộ **Definition of Done (DoD)** chung cho đội LibCore.
+
+### Nhiệm vụ 2: Viết User Story chuẩn INVEST & Given/When/Then
+Viết **2 User Story** cho tính năng **Trả sách & Tính tiền phạt trễ hạn** (gồm đầy đủ vai trò – hành động – giá trị), mỗi Story kèm ít nhất **2 Tiêu chí chấp nhận dạng Given / When / Then** (1 luồng chính + 1 ngoại lệ).
+
+### Nhiệm vụ 3: Cắt dọc (Vertical Slicing) bằng SPIDR
+Tính năng lớn: *"Bạn đọc đặt giữ sách trực tuyến, nhận thông báo khi có sách, giữ chỗ trong 48 giờ và tự hủy nếu quá hạn"* đang bị ước lượng **21 điểm**. Hãy chia nó thành **3 User Story cắt dọc (Vertical Slices)** sao cho mỗi Story đều đi xuyên UI–API–DB và demo được cuối mỗi Sprint.
+
+---
+
+## Phần B: Thử thách "Tìm lỗi trong tài liệu" (Spot-the-Flaw)
+
+Dưới đây là một đoạn trích **Backlog & Kế hoạch Sprint 1** của một nhóm mới làm Scrum. **Có ít nhất 6 lỗi sai / Anti-pattern** bị cố tình cài vào — hãy tìm hết chúng và nêu cách sửa!
+
+> **Kế hoạch Sprint 1 (Độ dài: 2 tuần — gia hạn thêm 3 ngày nếu chưa test kịp)**
+> - **Người chốt ưu tiên:** Hội đồng gồm Giám đốc Thư viện, Trưởng phòng CNTT và PM (biểu quyết theo số đông).
+> - **Story 1 (8 điểm):** *"Tạo toàn bộ 14 bảng Database cho hệ thống Thư viện."*
+> - **Story 2 (5 điểm):** *"Là sinh viên, tôi muốn giao diện tra cứu sách phải thật hiện đại, nhanh và thân thiện."*
+> - **Story 3 (13 điểm):** *"Quản lý toàn bộ chức năng Mượn, Trả, Đặt trước, Gia hạn, Phạt và Báo cáo cuối năm."*
+> - **Quy ước chấm Velocity:** Story nào Dev code xong 100% nhưng QA chưa kịp test thì vẫn tính 70% điểm vào Velocity Sprint 1 để báo cáo lãnh đạo, phần test đẩy sang Sprint 2.
+
+---
+
+## Rubric tự chấm bài (Checklist)
+
+<Checklist
+  listId="agile-libcore-rubric"
+  title="Rubric tự chấm Bài tập Agile & Spot-the-Flaw (đạt ≥ 6/7 mục)"
+  items={[
+    "Release 1 và Release 2 có mục tiêu kinh doanh rõ ràng, khớp mốc khai giảng tháng 4 và đợt mở rộng tháng 6.",
+    "Definition of Done gồm các tiêu chí kiểm chứng khách quan (Code Review, Test tự động/QA, không lỗi Cao/Nghiêm trọng, triển khai môi trường Staging).",
+    "2 User Story viết đủ cấu trúc Là [Ai] – muốn [Gì] – để [Giá trị] và đạt cả 6 tiêu chí INVEST.",
+    "Tiêu chí chấp nhận viết rõ bằng Given / When / Then, có con số cụ thể (không dùng tính từ mơ hồ) và có ít nhất 1 kịch bản ngoại lệ.",
+    "3 lát cắt tính năng Đặt giữ sách đều là Vertical Slicing (xuyên UI–API–DB), không tách thành DB / BE / FE.",
+    "Trong Phần B (Spot-the-Flaw), tìm ra ít nhất 5/6 lỗi sai (gia hạn Sprint, PO hội đồng, Horizontal Slice, Story không Testable, Story quá to 13+ điểm, tính 70% Velocity chưa đạt DoD).",
+    "Nêu được cách sửa chuẩn Scrum Guide 2020 cho từng lỗi tìm thấy ở Phần B."
+  ]}
+/>
+
+---
+
+## Đáp án mẫu tham khảo
+
+<details>
+<summary><strong>Bấm để đối chiếu Đáp án mẫu (chỉ mở sau khi bạn đã tự làm!)</strong></summary>
+
+### Đáp án Phần A
+1. **Release Plan & DoD mẫu:**
+   - **Release 1 (Tháng 4 – 4 Sprint):** Đưa vào vận hành trọn vẹn luồng lõi tại quầy và tra cứu cơ bản (Tra cứu sách trên web/mobile, Đăng nhập SSO, Mượn/Trả bằng mã vạch, Quản lý bạn đọc & Nhập kho sách) kịp ngày khai giảng.
+   - **Release 2 (Tháng 6 – 3 Sprint):** Tự động hóa tương tác và quản trị (Đặt giữ sách online, Nhắc hạn tự động, Thanh toán phạt QR và Dashboard thống kê đầu sách).
+   - **DoD mẫu:** (1) Code đã qua Pull Request review bởi ≥ 1 thành viên; (2) Unit & Integration Test chạy xanh 100% trên CI; (3) QA xác nhận đạt 100% tiêu chí chấp nhận, 0 lỗi mức Blocker/High; (4) Deploy thành công lên môi trường Staging sẵn sàng demo tại Sprint Review.
+
+2. **User Story & Given/When/Then mẫu:**
+   - **US-201:** *Là một **Thủ thư**, tôi muốn **hệ thống tự động tính tiền phạt khi tôi quét mã trả cuốn sách quá hạn**, để **thu phạt chính xác theo quy chế mà không cần bấm máy tính tay**.*
+     - *Given* sinh viên A trả 1 cuốn sách có giá bìa 100.000đ bị quá hạn 4 ngày (quy chế: 5.000đ/ngày), *When* thủ thư quét mã vạch trả sách, *Then* hệ thống hiển thị số ngày quá hạn = `4`, tiền phạt = `20.000đ` và trạng thái chờ thu phạt.
+     - *Given* sinh viên B trả 1 cuốn sách có giá bìa 80.000đ bị quá hạn 30 ngày (5.000 × 30 = 150.000đ > giá bìa), *When* thủ thư quét mã trả sách, *Then* hệ thống áp trần tiền phạt tối đa bằng đúng giá bìa `80.000đ`.
+
+3. **Vertical Slicing cho tính năng Đặt giữ sách (3 lát cắt dọc):**
+   - **Lát 1 (Happy Path cơ bản):** Sinh viên bấm "Đặt giữ" cho cuốn đang được mượn hết → lưu hàng đợi FIFO → thủ thư thấy cảnh báo có người đặt khi cuốn đó được trả (đủ UI–API–DB).
+   - **Lát 2 (Thông báo & Giới hạn giữ 48h):** Tự động gửi email thông báo khi sách sẵn sàng và gắn hạn giữ `+48 giờ` để thủ thư xác nhận bàn giao.
+   - **Lát 3 (Tự động hủy quá hạn & chuyển người tiếp theo):** Job nền tự hủy đơn giữ quá 48h không đến nhận và tự động thông báo cho bạn đọc kế tiếp trong hàng đợi.
+
+### Đáp án Phần B (6 lỗi ẩn trong tài liệu mẫu)
+1. **Gia hạn Sprint thêm 3 ngày:** Sai! Sprint có khung thời gian cố định (**time-box**), tuyệt đối không kéo dài.
+2. **PO là "Hội đồng 3 người biểu quyết":** Sai! Theo Scrum Guide 2020, Product Owner phải là **1 cá nhân duy nhất** (không phải ủy ban).
+3. **Story 1 ("Tạo toàn bộ 14 bảng DB"):** Sai! Đây là **Horizontal Slicing** (cắt ngang theo tầng kỹ thuật), vi phạm chữ **V (Valuable)** trong INVEST vì người dùng không thấy giá trị gì chạy được.
+4. **Story 2 ("thật hiện đại, nhanh và thân thiện"):** Sai! Vi phạm chữ **T (Testable)** — tính từ cảm tính không đo kiểm được (cần đổi thành ví dụ: *"trả kết quả ≤ 1,5 giây, thao tác trên màn hình mobile 360px không vỡ bố cục"*).
+5. **Story 3 (13 điểm, gom 6 phân hệ lớn):** Sai! Đây là cả một Epic/Release khổng lồ, vi phạm chữ **S (Small)** và **I (Independent)**, chắc chắn không xong trong 1 Sprint 2 tuần.
+6. **Tính 70% Velocity cho Story chưa test:** Sai! Phản mẫu **Carry-over credit** — vi phạm **Definition of Done**. Chưa đạt 100% DoD thì tính **0 điểm** và trả về Product Backlog để PO xem xét lại.
+
+</details>

@@ -1,0 +1,245 @@
+:root {
+  --sl-accent-hue: 225;
+  --sl-color-accent-low: #182348;
+  --sl-color-accent: #3b63f6;
+  --sl-color-accent-high: #b8cbff;
+  --sdlc-success: #15803d;
+  --sdlc-success-bg: rgba(22, 163, 74, 0.12);
+  --sdlc-danger: #dc2626;
+  --sdlc-danger-bg: rgba(220, 38, 38, 0.12);
+  --sdlc-warn: #b45309;
+  --sdlc-warn-bg: rgba(217, 119, 6, 0.12);
+  --sdlc-card-bg: var(--sl-color-bg-nav);
+  --sdlc-border: var(--sl-color-hairline);
+}
+
+:root[data-theme='light'] {
+  --sl-color-accent-low: #e0e9ff;
+  --sl-color-accent: #254eda;
+  --sl-color-accent-high: #142975;
+  --sdlc-success: #15803d;
+  --sdlc-success-bg: #dcfce7;
+  --sdlc-danger: #b91c1c;
+  --sdlc-danger-bg: #fee2e2;
+  --sdlc-warn: #b45309;
+  --sdlc-warn-bg: #fef3c7;
+}
+
+/* Mermaid diagrams */
+.mermaid-wrapper {
+  margin: 1.5rem 0;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--sdlc-border);
+  background: var(--sdlc-card-bg);
+  overflow-x: auto;
+  display: flex;
+  justify-content: center;
+}
+
+.mermaid-wrapper pre.mermaid {
+  margin: 0;
+  background: transparent;
+  border: none;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.mermaid-wrapper pre.mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Reusable interactive widget shell */
+.sdlc-widget {
+  margin: 1.75rem 0;
+  padding: 1.5rem;
+  border-radius: 0.85rem;
+  border: 1px solid var(--sdlc-border);
+  background: var(--sdlc-card-bg);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+
+.sdlc-widget-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--sdlc-border);
+}
+
+.sdlc-widget-title {
+  margin: 0 !important;
+  font-size: 1.15rem !important;
+  font-weight: 700;
+}
+
+.sdlc-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid var(--sdlc-border);
+  background: var(--sl-color-bg);
+}
+
+.sdlc-badge-pass {
+  color: var(--sdlc-success);
+  background: var(--sdlc-success-bg);
+  border-color: var(--sdlc-success);
+}
+
+.sdlc-badge-fail {
+  color: var(--sdlc-danger);
+  background: var(--sdlc-danger-bg);
+  border-color: var(--sdlc-danger);
+}
+
+.sdlc-badge-warn {
+  color: var(--sdlc-warn);
+  background: var(--sdlc-warn-bg);
+  border-color: var(--sdlc-warn);
+}
+
+.sdlc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1.05rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--sdlc-border);
+  background: var(--sl-color-bg);
+  color: var(--sl-color-text);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.1s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.sdlc-btn:hover:not(:disabled) {
+  border-color: var(--sl-color-accent);
+  background: var(--sl-color-accent-low);
+}
+
+.sdlc-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.sdlc-btn-primary {
+  background: var(--sl-color-accent);
+  color: #ffffff;
+  border-color: var(--sl-color-accent);
+}
+
+.sdlc-btn-primary:hover:not(:disabled) {
+  background: var(--sl-color-accent-high);
+  color: var(--sl-color-bg);
+  border-color: var(--sl-color-accent-high);
+}
+
+/* Comparison cards (Ví dụ Đúng / Sai) */
+.sdlc-compare-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0;
+}
+
+.sdlc-compare-card {
+  padding: 1rem 1.15rem;
+  border-radius: 0.65rem;
+  border: 1px solid var(--sdlc-border);
+  background: var(--sdlc-card-bg);
+}
+
+.sdlc-compare-card.is-good {
+  border-left: 4px solid var(--sdlc-success);
+}
+
+.sdlc-compare-card.is-bad {
+  border-left: 4px solid var(--sdlc-danger);
+}
+
+.sdlc-compare-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.5rem;
+}
+
+.sdlc-compare-card.is-good .sdlc-compare-label {
+  color: var(--sdlc-success);
+}
+
+.sdlc-compare-card.is-bad .sdlc-compare-label {
+  color: var(--sdlc-danger);
+}
+
+/* Inline glossary term highlight */
+.sdlc-term {
+  border-bottom: 1.5px dotted var(--sl-color-accent);
+  cursor: help;
+  position: relative;
+  font-weight: 500;
+}
+
+/* Progress bar */
+.sdlc-progress-track {
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--sl-color-hairline);
+  overflow: hidden;
+}
+
+.sdlc-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--sl-color-accent);
+  transition: width 0.3s ease;
+}
+
+.sdlc-progress-fill.is-mastered {
+  background: var(--sdlc-success);
+}
+
+/* Self-explain prompt box */
+.sdlc-reflect-box {
+  margin: 1.5rem 0;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  border: 1px dashed var(--sl-color-accent);
+  background: var(--sdlc-card-bg);
+}
+
+.sdlc-reflect-box textarea {
+  width: 100%;
+  min-height: 95px;
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--sdlc-border);
+  background: var(--sl-color-bg);
+  color: var(--sl-color-text);
+  font-family: inherit;
+  font-size: 0.95rem;
+  resize: vertical;
+}
+
+/* Cleaner tables */
+.sl-markdown-content table {
+  display: table;
+  width: 100%;
+  font-size: 0.93rem;
+}

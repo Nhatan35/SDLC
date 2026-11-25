@@ -1,0 +1,275 @@
+---
+import { AGILE_SCENARIOS } from '../data/scenarios';
+
+const categories = Array.from(new Set(AGILE_SCENARIOS.map((s) => s.category)));
+const payload = JSON.stringify(AGILE_SCENARIOS);
+---
+
+<div class="sdlc-widget sdlc-scenario-lab" data-scenarios={payload}>
+  <div class="sdlc-widget-header">
+    <div>
+      <h3 class="sdlc-widget-title">Phòng thực hành Tình huống Agile / Scrum ({AGILE_SCENARIOS.length} ca thực chiến)</h3>
+      <p style="margin:0.35rem 0 0;font-size:0.88rem;opacity:0.85;">
+        Đặt mình vào tình huống công việc thật, chọn cách xử lý và đối chiếu phân tích theo Scrum Guide 2020 kèm kịch bản đối thoại mẫu.
+      </p>
+    </div>
+    <span class="sdlc-badge" data-sl-progress>Đã xử lý tối ưu: 0 / {AGILE_SCENARIOS.length}</span>
+  </div>
+
+  <div class="sdlc-sl-filter">
+    <select class="sdlc-sl-select" data-sl-cat aria-label="Lọc theo chủ đề tình huống">
+      <option value="all">Tất cả chủ đề ({AGILE_SCENARIOS.length} tình huống)</option>
+      {categories.map((c) => <option value={c}>{c}</option>)}
+    </select>
+    <button type="button" class="sdlc-btn" data-sl-reset>Đặt lại lựa chọn</button>
+  </div>
+
+  <div class="sdlc-sl-list">
+    {AGILE_SCENARIOS.map((sc, sIdx) => (
+      <section class="sdlc-sc-card" data-sc-id={sc.id} data-sc-cat={sc.category} data-sc-idx={sIdx}>
+        <div class="sdlc-sc-meta">
+          <span class="sdlc-badge">{sc.category}</span>
+          <span class="sdlc-badge">Vai trò: {sc.role}</span>
+          <span class="sdlc-badge" data-sc-state>Chưa chọn</span>
+        </div>
+
+        <h4 class="sdlc-sc-title">{sc.title}</h4>
+        <p class="sdlc-sc-desc">{sc.situation}</p>
+
+        <div class="sdlc-sc-choices">
+          {sc.choices.map((ch, cIdx) => (
+            <button type="button" class="sdlc-sc-choice" data-choice-idx={cIdx}>
+              <span class="sdlc-sc-letter">{String.fromCharCode(65 + cIdx)}.</span>
+              <span>{ch.label}</span>
+            </button>
+          ))}
+        </div>
+
+        <div class="sdlc-sc-result" data-sc-result hidden></div>
+      </section>
+    ))}
+  </div>
+</div>
+
+<style>
+  .sdlc-sl-filter {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.1rem;
+    align-items: center;
+  }
+  .sdlc-sl-select {
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--sdlc-border);
+    background: var(--sl-color-bg);
+    color: var(--sl-color-text);
+    font-size: 0.9rem;
+  }
+  .sdlc-sl-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+  }
+  .sdlc-sc-card {
+    padding: 1.2rem 1.3rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--sdlc-border);
+    background: var(--sl-color-bg);
+  }
+  .sdlc-sc-meta {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.6rem;
+  }
+  .sdlc-sc-title {
+    margin: 0.25rem 0 0.5rem !important;
+    font-size: 1.04rem !important;
+  }
+  .sdlc-sc-desc {
+    margin: 0 0 0.9rem !important;
+    font-size: 0.94rem;
+    line-height: 1.6;
+  }
+  .sdlc-sc-choices {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .sdlc-sc-choice {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.55rem;
+    text-align: left;
+    padding: 0.65rem 0.85rem;
+    border-radius: 0.55rem;
+    border: 1px solid var(--sdlc-border);
+    background: var(--sdlc-card-bg);
+    color: var(--sl-color-text);
+    cursor: pointer;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .sdlc-sc-choice:hover {
+    border-color: var(--sl-color-accent);
+  }
+  .sdlc-sc-letter {
+    font-weight: 700;
+    color: var(--sl-color-accent);
+  }
+  .sdlc-sc-choice.is-optimal {
+    border-color: var(--sdlc-success);
+    background: var(--sdlc-success-bg);
+  }
+  .sdlc-sc-choice.is-risky {
+    border-color: var(--sdlc-warn);
+    background: var(--sdlc-warn-bg);
+  }
+  .sdlc-sc-choice.is-antipattern {
+    border-color: var(--sdlc-danger);
+    background: var(--sdlc-danger-bg);
+  }
+  .sdlc-sc-result {
+    margin-top: 0.95rem;
+    padding: 0.95rem 1.1rem;
+    border-radius: 0.6rem;
+    border: 1px solid var(--sdlc-border);
+    background: var(--sdlc-card-bg);
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+  .sdlc-sc-dialogue {
+    margin-top: 0.65rem;
+    padding: 0.7rem 0.85rem;
+    border-left: 3px solid var(--sl-color-accent);
+    border-radius: 0.35rem;
+    background: var(--sl-color-bg);
+    font-style: italic;
+  }
+</style>
+
+<script>
+  import type { AgileScenario } from '../data/scenarios';
+  import { loadProgress, saveScenarioChoice, resetScenarioChoices } from '../lib/progress';
+
+  document.querySelectorAll<HTMLElement>('.sdlc-scenario-lab').forEach((root) => {
+    if (root.dataset.bound === '1') return;
+    root.dataset.bound = '1';
+
+    const scenarios: AgileScenario[] = JSON.parse(root.dataset.scenarios || '[]');
+    const progressEl = root.querySelector<HTMLElement>('[data-sl-progress]');
+    const catSel = root.querySelector<HTMLSelectElement>('[data-sl-cat]');
+    const resetBtn = root.querySelector<HTMLButtonElement>('[data-sl-reset]');
+    const cards = Array.from(root.querySelectorAll<HTMLElement>('.sdlc-sc-card'));
+
+    const verdictMeta = {
+      optimal: { label: 'XỬ LÝ TỐI ƯU (Best Practice)', badgeClass: 'sdlc-badge-pass', btnClass: 'is-optimal' },
+      risky: { label: 'TẠM CHẤP NHẬN / CÓ RỦI RO', badgeClass: 'sdlc-badge-warn', btnClass: 'is-risky' },
+      antipattern: { label: 'PHẢN MẪU (Anti-pattern)', badgeClass: 'sdlc-badge-fail', btnClass: 'is-antipattern' },
+    } as const;
+
+    const updateProgress = () => {
+      const saved = loadProgress().scenarios;
+      let optimalCount = 0;
+      scenarios.forEach((sc) => {
+        const picked = saved[sc.id];
+        if (typeof picked === 'number' && sc.choices[picked]?.verdict === 'optimal') {
+          optimalCount++;
+        }
+      });
+      if (progressEl) {
+        progressEl.textContent = `Đã xử lý tối ưu: ${optimalCount} / ${scenarios.length}`;
+        progressEl.classList.toggle('sdlc-badge-pass', optimalCount === scenarios.length);
+      }
+    };
+
+    const renderChoice = (card: HTMLElement, sc: AgileScenario, choiceIdx: number) => {
+      const choice = sc.choices[choiceIdx];
+      if (!choice) return;
+      const meta = verdictMeta[choice.verdict];
+      const btns = Array.from(card.querySelectorAll<HTMLButtonElement>('.sdlc-sc-choice'));
+      const stateEl = card.querySelector<HTMLElement>('[data-sc-state]');
+      const resEl = card.querySelector<HTMLElement>('[data-sc-result]');
+
+      btns.forEach((b) => b.classList.remove('is-optimal', 'is-risky', 'is-antipattern'));
+      btns[choiceIdx]?.classList.add(meta.btnClass);
+
+      if (stateEl) {
+        stateEl.classList.remove('sdlc-badge-pass', 'sdlc-badge-warn', 'sdlc-badge-fail');
+        stateEl.classList.add(meta.badgeClass);
+        stateEl.textContent = choice.verdict === 'optimal' ? 'Đạt chuẩn' : choice.verdict === 'risky' ? 'Có rủi ro' : 'Anti-pattern';
+      }
+
+      if (resEl) {
+        resEl.hidden = false;
+        const optimalIdx = sc.choices.findIndex((c) => c.verdict === 'optimal');
+        const hintOptimal =
+          choice.verdict !== 'optimal' && optimalIdx >= 0
+            ? `<div style="margin-top:0.55rem;opacity:0.9;"><strong>Gợi ý:</strong> Hãy thử cân nhắc phương án khác để tìm cách xử lý tối ưu theo chuẩn Scrum!</div>`
+            : '';
+        const dialogueHtml = choice.dialogue
+          ? `<div class="sdlc-sc-dialogue"><strong>Kịch bản đối thoại thực tế:</strong> ${choice.dialogue}</div>`
+          : '';
+        resEl.innerHTML = `
+          <div><span class="sdlc-badge ${meta.badgeClass}">${meta.label}</span></div>
+          <div style="margin-top:0.55rem;"><strong>Phân tích nguyên tắc:</strong> ${choice.analysis}</div>
+          <div style="margin-top:0.4rem;"><strong>Hậu quả thực tế:</strong> ${choice.consequence}</div>
+          ${dialogueHtml}
+          ${hintOptimal}
+          <div style="margin-top:0.55rem;font-size:0.82rem;opacity:0.78;">Nguồn đối chiếu: ${sc.reference}</div>
+        `;
+      }
+    };
+
+    const saved = loadProgress().scenarios;
+    cards.forEach((card, idx) => {
+      const sc = scenarios[idx];
+      const btns = Array.from(card.querySelectorAll<HTMLButtonElement>('.sdlc-sc-choice'));
+
+      if (typeof saved[sc.id] === 'number') {
+        renderChoice(card, sc, saved[sc.id]);
+      }
+
+      btns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const cIdx = Number(btn.dataset.choiceIdx);
+          saveScenarioChoice(sc.id, cIdx);
+          renderChoice(card, sc, cIdx);
+          updateProgress();
+        });
+      });
+    });
+
+    catSel?.addEventListener('change', () => {
+      const val = catSel.value;
+      cards.forEach((card) => {
+        card.hidden = val !== 'all' && card.dataset.scCat !== val;
+      });
+    });
+
+    resetBtn?.addEventListener('click', () => {
+      resetScenarioChoices();
+      cards.forEach((card) => {
+        card.querySelectorAll('.sdlc-sc-choice').forEach((b) =>
+          b.classList.remove('is-optimal', 'is-risky', 'is-antipattern')
+        );
+        const stateEl = card.querySelector<HTMLElement>('[data-sc-state]');
+        if (stateEl) {
+          stateEl.classList.remove('sdlc-badge-pass', 'sdlc-badge-warn', 'sdlc-badge-fail');
+          stateEl.textContent = 'Chưa chọn';
+        }
+        const resEl = card.querySelector<HTMLElement>('[data-sc-result]');
+        if (resEl) {
+          resEl.hidden = true;
+          resEl.innerHTML = '';
+        }
+      });
+      updateProgress();
+    });
+
+    updateProgress();
+  });
+</script>

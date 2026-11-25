@@ -1,0 +1,378 @@
+---
+import { QUIZZES } from '../data/quizzes';
+
+interface Props {
+  quizId: string;
+  timeLimitMinutes?: number;
+}
+
+const { quizId, timeLimitMinutes } = Astro.props;
+const quiz = QUIZZES[quizId];
+if (!quiz) {
+  throw new Error(`Quiz not found: ${quizId}`);
+}
+const payload = JSON.stringify(quiz);
+const passPercent = Math.round(quiz.passThreshold * 100);
+---
+
+<div
+  class="sdlc-widget sdlc-quiz"
+  data-quiz-id={quiz.id}
+  data-quiz-payload={payload}
+  data-time-limit={timeLimitMinutes ?? 0}
+>
+  <div class="sdlc-widget-header">
+    <div>
+      <h3 class="sdlc-widget-title">{quiz.title}</h3>
+      <p style="margin: 0.35rem 0 0; font-size: 0.9rem; opacity: 0.85;">{quiz.description}</p>
+    </div>
+    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;">
+      <span class="sdlc-badge">Ngưỡng đạt: {passPercent}%</span>
+      <span class="sdlc-badge" data-quiz-status>Chưa làm</span>
+    </div>
+  </div>
+
+  {timeLimitMinutes && timeLimitMinutes > 0 && (
+    <div class="sdlc-timer-bar" data-timer-bar>
+      <span>Chế độ thi bấm giờ (tùy chọn): <strong data-timer-display>{String(timeLimitMinutes).padStart(2, '0')}:00</strong></span>
+      <div style="display:flex;gap:0.45rem;flex-wrap:wrap;">
+        <button type="button" class="sdlc-btn" data-timer-toggle style="padding:0.32rem 0.7rem;font-size:0.83rem;">Bắt đầu bấm giờ</button>
+        <button type="button" class="sdlc-btn" data-timer-reset style="padding:0.32rem 0.7rem;font-size:0.83rem;">Đặt lại giờ</button>
+      </div>
+    </div>
+  )}
+
+  <div class="sdlc-quiz-questions">
+    {quiz.questions.map((q, qIdx) => (
+      <fieldset class="sdlc-q-block" data-q-index={qIdx}>
+        <legend class="sdlc-q-title">
+          <span class="sdlc-q-num">Câu {qIdx + 1}/{quiz.questions.length}:</span> {q.question}
+        </legend>
+        <div class="sdlc-q-options">
+          {q.options.map((opt, oIdx) => (
+            <label class="sdlc-q-option" data-opt-index={oIdx}>
+              <input type="radio" name={`${quiz.id}-q-${qIdx}`} value={oIdx} />
+              <span>{opt}</span>
+            </label>
+          ))}
+        </div>
+        <div class="sdlc-q-feedback" hidden></div>
+      </fieldset>
+    ))}
+  </div>
+
+  <div class="sdlc-quiz-actions">
+    <button type="button" class="sdlc-btn sdlc-btn-primary" data-quiz-submit>Chấm điểm</button>
+    <button type="button" class="sdlc-btn" data-quiz-reset>Làm lại</button>
+  </div>
+
+  <div class="sdlc-quiz-summary" hidden></div>
+</div>
+
+<style>
+  .sdlc-q-block {
+    border: 1px solid var(--sdlc-border);
+    border-radius: 0.65rem;
+    padding: 1rem 1.15rem;
+    margin: 0 0 1rem 0;
+    background: var(--sl-color-bg);
+  }
+  .sdlc-q-title {
+    font-weight: 600;
+    font-size: 0.98rem;
+    padding: 0 0.25rem;
+    line-height: 1.5;
+  }
+  .sdlc-q-num {
+    color: var(--sl-color-accent);
+    font-weight: 700;
+  }
+  .sdlc-q-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+  .sdlc-q-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    padding: 0.6rem 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--sdlc-border);
+    cursor: pointer;
+    font-size: 0.93rem;
+    line-height: 1.45;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .sdlc-q-option:hover {
+    border-color: var(--sl-color-accent);
+  }
+  .sdlc-q-option input {
+    margin-top: 0.25rem;
+    flex-shrink: 0;
+  }
+  .sdlc-q-option.is-correct {
+    border-color: var(--sdlc-success);
+    background: var(--sdlc-success-bg);
+  }
+  .sdlc-q-option.is-wrong {
+    border-color: var(--sdlc-danger);
+    background: var(--sdlc-danger-bg);
+  }
+  .sdlc-q-feedback {
+    margin-top: 0.85rem;
+    padding: 0.75rem 0.9rem;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    border-left: 3px solid var(--sl-color-accent);
+    background: var(--sdlc-card-bg);
+  }
+  .sdlc-quiz-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+  }
+  .sdlc-quiz-summary {
+    margin-top: 1.15rem;
+    padding: 1rem 1.15rem;
+    border-radius: 0.65rem;
+    border: 1px solid var(--sdlc-border);
+    font-size: 0.95rem;
+    line-height: 1.55;
+  }
+  .sdlc-quiz-summary.is-pass {
+    border-color: var(--sdlc-success);
+    background: var(--sdlc-success-bg);
+  }
+  .sdlc-quiz-summary.is-fail {
+    border-color: var(--sdlc-warn);
+    background: var(--sdlc-warn-bg);
+  }
+  .sdlc-timer-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    padding: 0.65rem 0.9rem;
+    margin-bottom: 1rem;
+    border-radius: 0.55rem;
+    border: 1px solid var(--sdlc-border);
+    background: var(--sl-color-bg);
+    font-size: 0.9rem;
+  }
+  .sdlc-timer-bar.is-low {
+    border-color: var(--sdlc-danger);
+    background: var(--sdlc-danger-bg);
+  }
+</style>
+
+<script>
+  import { loadProgress, recordQuizResult } from '../lib/progress';
+  import type { QuizDefinition } from '../data/quizzes';
+
+  function initQuizzes() {
+    document.querySelectorAll<HTMLElement>('.sdlc-quiz').forEach((root) => {
+      if (root.dataset.initialized === '1') return;
+      root.dataset.initialized = '1';
+
+      const quiz: QuizDefinition = JSON.parse(root.dataset.quizPayload || '{}');
+      const statusEl = root.querySelector<HTMLElement>('[data-quiz-status]');
+      const submitBtn = root.querySelector<HTMLButtonElement>('[data-quiz-submit]');
+      const resetBtn = root.querySelector<HTMLButtonElement>('[data-quiz-reset]');
+      const summaryEl = root.querySelector<HTMLElement>('.sdlc-quiz-summary');
+
+      // Optional exam countdown timer
+      const limitMins = Number(root.dataset.timeLimit || '0');
+      const timerBar = root.querySelector<HTMLElement>('[data-timer-bar]');
+      const timerDisplay = root.querySelector<HTMLElement>('[data-timer-display]');
+      const timerToggle = root.querySelector<HTMLButtonElement>('[data-timer-toggle]');
+      const timerReset = root.querySelector<HTMLButtonElement>('[data-timer-reset]');
+      let remainingSec = limitMins * 60;
+      let timerId: number | null = null;
+
+      const renderTimer = () => {
+        if (!timerDisplay) return;
+        const mm = String(Math.floor(remainingSec / 60)).padStart(2, '0');
+        const ss = String(remainingSec % 60).padStart(2, '0');
+        timerDisplay.textContent = `${mm}:${ss}`;
+        timerBar?.classList.toggle('is-low', remainingSec > 0 && remainingSec <= 120);
+      };
+
+      const stopTimer = () => {
+        if (timerId !== null) {
+          window.clearInterval(timerId);
+          timerId = null;
+        }
+        if (timerToggle) timerToggle.textContent = 'Tiếp tục bấm giờ';
+      };
+
+      timerToggle?.addEventListener('click', () => {
+        if (timerId !== null) {
+          stopTimer();
+          return;
+        }
+        if (remainingSec <= 0) remainingSec = limitMins * 60;
+        if (timerToggle) timerToggle.textContent = 'Tạm dừng';
+        timerId = window.setInterval(() => {
+          remainingSec = Math.max(0, remainingSec - 1);
+          renderTimer();
+          if (remainingSec === 0) {
+            stopTimer();
+            if (timerToggle) timerToggle.textContent = 'Hết giờ';
+          }
+        }, 1000);
+      });
+
+      timerReset?.addEventListener('click', () => {
+        stopTimer();
+        remainingSec = limitMins * 60;
+        renderTimer();
+        if (timerToggle) timerToggle.textContent = 'Bắt đầu bấm giờ';
+      });
+
+      const updateBadge = () => {
+        const state = loadProgress();
+        const rec = state.quizzes[quiz.id];
+        if (!statusEl) return;
+        statusEl.classList.remove('sdlc-badge-pass', 'sdlc-badge-warn');
+        if (!rec) {
+          statusEl.textContent = 'Chưa làm';
+          return;
+        }
+        const pct = Math.round((rec.bestScore / rec.total) * 100);
+        if (rec.passed) {
+          statusEl.textContent = `Đã thành thạo (${rec.bestScore}/${rec.total} – ${pct}%)`;
+          statusEl.classList.add('sdlc-badge-pass');
+        } else {
+          statusEl.textContent = `Cao nhất: ${rec.bestScore}/${rec.total} (${pct}%)`;
+          statusEl.classList.add('sdlc-badge-warn');
+        }
+      };
+
+      updateBadge();
+
+      submitBtn?.addEventListener('click', () => {
+        stopTimer();
+        const blocks = Array.from(root.querySelectorAll<HTMLElement>('.sdlc-q-block'));
+        let answered = 0;
+        let correct = 0;
+        const weakTopics = new Map<string, { count: number; link?: string }>();
+
+        blocks.forEach((block, idx) => {
+          const q = quiz.questions[idx];
+          const checked = block.querySelector<HTMLInputElement>('input[type="radio"]:checked');
+          const options = Array.from(block.querySelectorAll<HTMLElement>('.sdlc-q-option'));
+          const fb = block.querySelector<HTMLElement>('.sdlc-q-feedback');
+
+          options.forEach((o) => o.classList.remove('is-correct', 'is-wrong'));
+
+          const chosen = checked ? Number(checked.value) : -1;
+          if (chosen >= 0) answered++;
+
+          options[q.correctIndex]?.classList.add('is-correct');
+
+          const isRight = chosen === q.correctIndex;
+          if (isRight) {
+            correct++;
+          } else {
+            if (chosen >= 0) options[chosen]?.classList.add('is-wrong');
+            if (q.topic) {
+              const prev = weakTopics.get(q.topic) ?? { count: 0, link: q.moduleLink };
+              prev.count += 1;
+              weakTopics.set(q.topic, prev);
+            }
+          }
+
+          if (fb) {
+            fb.hidden = false;
+            const verdict = isRight
+              ? '<strong>Chính xác.</strong> '
+              : chosen === -1
+                ? '<strong>Chưa chọn đáp án.</strong> '
+                : '<strong>Chưa đúng.</strong> ';
+            const src = q.source ? `<div style="margin-top:0.35rem;opacity:0.78;font-size:0.83rem;">Nguồn: ${q.source}</div>` : '';
+            fb.innerHTML = `${verdict}${q.explanation}${src}`;
+          }
+        });
+
+        const total = quiz.questions.length;
+        const pct = Math.round((correct / total) * 100);
+        const passed = correct / total >= quiz.passThreshold;
+        recordQuizResult(quiz.id, correct, total, quiz.passThreshold);
+        updateBadge();
+
+        if (summaryEl) {
+          summaryEl.hidden = false;
+          summaryEl.classList.remove('is-pass', 'is-fail');
+          summaryEl.classList.add(passed ? 'is-pass' : 'is-fail');
+
+          let recHtml = '';
+          if (weakTopics.size > 0) {
+            const items = Array.from(weakTopics.entries())
+              .map(([topic, info]) =>
+                info.link
+                  ? `<li><a href="${info.link}">${topic}</a> (sai ${info.count} câu)</li>`
+                  : `<li>${topic} (sai ${info.count} câu)</li>`
+              )
+              .join('');
+            recHtml = `<div style="margin-top:0.65rem;"><strong>Phần nên xem lại:</strong><ul style="margin:0.35rem 0 0 1.25rem;">${items}</ul></div>`;
+          }
+
+          const unansweredNote =
+            answered < total
+              ? `<div style="margin-top:0.35rem;font-size:0.88rem;">Lưu ý: bạn còn ${total - answered} câu chưa chọn.</div>`
+              : '';
+
+          if (quiz.mode === 'diagnostic') {
+            summaryEl.innerHTML = `
+              <div><strong>Kết quả kiểm tra đầu vào: ${correct}/${total} (${pct}%)</strong></div>
+              ${unansweredNote}
+              <div style="margin-top:0.4rem;">${
+                passed
+                  ? 'Bạn đã có nền tảng khá tốt! Hãy ưu tiên đọc kỹ phần thực hành chọn mô hình (M1.3), dự án mô phỏng và làm Bài kiểm tra cuối Cấp 1.'
+                  : 'Rất tốt khi làm kiểm tra đầu vào! Hãy học tuần tự từ M0.1 đến M1.3 và làm đủ quiz từng bài để nắm chắc kiến thức.'
+              }</div>
+              ${recHtml}
+            `;
+          } else {
+            summaryEl.innerHTML = `
+              <div><strong>Kết quả: ${correct}/${total} (${pct}%) — ${
+                passed ? 'ĐẠT NGƯỠNG THÀNH THẠO' : 'CHƯA ĐẠT NGƯỠNG 80%'
+              }</strong></div>
+              ${unansweredNote}
+              <div style="margin-top:0.4rem;">${
+                passed
+                  ? 'Tuyệt vời! Tiến độ thành thạo đã được lưu. Hãy dành 3 phút ôn Flashcard để củng cố trí nhớ dài hạn.'
+                  : 'Đừng vội qua bài mới. Hãy đọc kỹ giải thích ở từng câu sai phía trên, xem lại phần lý thuyết rồi bấm "Làm lại" để đạt ≥ 80%.'
+              }</div>
+              ${recHtml}
+            `;
+          }
+        }
+      });
+
+      resetBtn?.addEventListener('click', () => {
+        root.querySelectorAll<HTMLInputElement>('input[type="radio"]').forEach((r) => {
+          r.checked = false;
+        });
+        root.querySelectorAll<HTMLElement>('.sdlc-q-option').forEach((o) => {
+          o.classList.remove('is-correct', 'is-wrong');
+        });
+        root.querySelectorAll<HTMLElement>('.sdlc-q-feedback').forEach((fb) => {
+          fb.hidden = true;
+          fb.innerHTML = '';
+        });
+        if (summaryEl) {
+          summaryEl.hidden = true;
+          summaryEl.innerHTML = '';
+        }
+      });
+    });
+  }
+
+  initQuizzes();
+</script>

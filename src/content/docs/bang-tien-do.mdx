@@ -1,0 +1,14 @@
+---
+title: Bảng theo dõi mức độ thành thạo
+description: Theo dõi điểm quiz, tỷ lệ thành thạo từng module, thẻ flashcard đến hạn và sao lưu tiến độ học tập.
+---
+
+import MasteryDashboard from '../../components/MasteryDashboard.astro';
+
+Trang này tổng hợp toàn bộ tiến độ học tập của bạn. Mọi dữ liệu được lưu cục bộ trong `localStorage` của trình duyệt (hoạt động 100% offline, không gửi ra ngoài).
+
+<MasteryDashboard />
+
+:::note[Lưu ý khi đổi máy hoặc xóa cache trình duyệt]
+Hãy bấm **Xuất tiến độ (.json)** định kỳ mỗi tuần để lưu một bản dự phòng. Khi cần chuyển sang máy tính hoặc trình duyệt khác, chỉ cần bấm **Nhập file tiến độ (.json)** là toàn bộ lịch sử quiz, hộp flashcard và ghi chú sẽ được khôi phục nguyên vẹn.
+:::

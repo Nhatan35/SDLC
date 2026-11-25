@@ -1,0 +1,33 @@
+---
+title: "AS.4: 12 Tình huống Thực chiến & Phản mẫu (Anti-patterns) trong Agile/Scrum"
+description: Phòng thực hành tương tác xử lý 12 tình huống thực tế hay gặp nhất theo Scrum Guide 2020 & Agile Project Management For Dummies, kèm kịch bản đối thoại mẫu và bảng 10 Anti-pattern.
+---
+
+import ScenarioLab from '../../../components/ScenarioLab.astro';
+
+Học thuộc Scrum Guide chỉ mới là **50% chặng đường**. 50% còn lại nằm ở việc bạn **xử lý ra sao khi thực tế va chạm với lý thuyết**: sếp chen việc giữa Sprint, khách hàng khóa cứng cả 3 đỉnh Tam giác Sắt, đội nhảy vào Sprint 1 mà không có Product Vision/Roadmap, Daily kéo dài 45 phút, QA chưa kịp test trước giờ Review, hay lãnh đạo đòi so sánh Velocity giữa các team.
+
+## 1. Phòng thực hành tương tác: 12 tình huống thực chiến
+
+Hãy đặt mình vào từng vai trò, chọn cách ứng xử bạn cho là đúng nhất và xem phân tích nguyên tắc (theo **Scrum Guide 2020** & ***Agile Project Management For Dummies***) kèm **kịch bản đối thoại khéo léo** có thể dùng ngay ngoài đời thật:
+
+<ScenarioLab />
+
+---
+
+## 2. Bảng tra cứu nhanh: 10 Phản mẫu (Anti-patterns) kinh điển trong Agile/Scrum
+
+| # | Tên Phản mẫu | Biểu hiện nhận diện | Cách hóa giải chuẩn |
+|---|---|---|---|
+| **1** | **ScrumBut** ("Scrum nhưng...") | "Đội mình làm Scrum *nhưng* bỏ Retrospective / *nhưng* không có PO" | Hiểu rõ mỗi phần tử Scrum đều gắn với Minh bạch–Thanh tra–Thích nghi; giải quyết gốc rễ thay vì cắt bỏ |
+| **2** | **Mini-Waterfall trong Sprint** | Tuần 1 chỉ Dev code, tuần 2 mới đẩy hết sang QA test | Cắt nhỏ Story (Vertical Slicing), kiểm thử liên tục từ ngày thứ 2–3 của Sprint |
+| **3** | **Sprint 0 kéo dài** | Dành 1–2 tháng đầu chỉ thiết kế giấy, không ra Increment | Xây kiến trúc tối thiểu song song với lát cắt tính năng chạy thật đầu tiên ngay Sprint 1 |
+| **4** | **Hardening / Stabilization Sprint** | Dồn hết sửa bug và test hồi quy sang Sprint cuối quý | Nâng chuẩn DoD, tự động hóa kiểm thử hồi quy để mỗi Sprint đều sẵn sàng phát hành |
+| **5** | **PO Ủy ban / PO vắng mặt** | 3–4 sếp cùng chỉ đạo backlog trái ngược nhau hoặc PO không dự Review | Chốt duy nhất 1 người PO có thẩm quyền quyết định; các sếp khác tham gia với vai trò Stakeholder |
+| **6** | **Daily Status Report** | Từng người báo cáo tiến độ dài dòng nhìn vào PM/SM | Walk the board từ phải sang trái tập trung vào Sprint Goal; giới hạn 15 phút; tách thảo luận sâu ra Parking Lot |
+| **7** | **Weaponized Velocity** | Dùng Story Point / Velocity làm KPI thưởng phạt và so sánh giữa các đội | Chỉ dùng Velocity để dự báo nội bộ; đánh giá hiệu quả bằng giá trị kinh doanh & chất lượng thật |
+| **8** | **Tính điểm 90% ("Carry-over credit")** | Story chưa test xong vẫn cộng 6/8 điểm vào Velocity Sprint này | Chỉ tính trọn vẹn khi đạt 100% DoD (0 hoặc đủ điểm) để giữ minh bạch |
+| **9** | **Smuggling Scope** | Khách hàng/Sếp nhắn riêng cho Dev nhét thêm việc giữa Sprint | Mọi yêu cầu đi qua PO; bảo vệ Sprint Goal và minh bạch việc "đổi món" nếu thật sự khẩn |
+| **10** | **Mechanical Scrum** | Chạy đủ 5 buổi họp đúng giờ nhưng không ai quan tâm người dùng có thích sản phẩm không | Gắn Sprint Review với người dùng thật, đo lường giá trị sử dụng thực tế (Validation) |
+
+Sau khi xử lý tối ưu cả 12 tình huống phía trên, hãy thử sức với [Bài thi Tình huống Agile & Scrum (20 câu chuẩn PSM I)](/agile-scrum/kiem-tra-agile-scrum/)!

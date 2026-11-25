@@ -1,0 +1,94 @@
+---
+title: "Bài tập Cấp 1: Chọn mô hình SDLC & Lập RACI cho LibCore"
+description: Thực hành áp dụng toàn bộ kiến thức Cấp 1 vào dự án Hệ thống Quản lý Thư viện LibCore, kèm tiêu chí tự chấm (Rubric) và đáp án mẫu.
+---
+
+import Checklist from '../../../components/Checklist.astro';
+
+:::note[Nguyên tắc tự học hiệu quả]
+Hãy lấy giấy hoặc mở một file ghi chú trống và **tự hoàn thành cả 3 yêu cầu bên dưới trong 25–30 phút** trước khi bấm mở phần **Đáp án mẫu tham khảo** ở cuối trang.
+:::
+
+## Đề bài thực hành
+
+Dựa trên bối cảnh [Dự án Hệ thống Quản lý Thư viện (LibCore)](/du-an-mo-phong/tong-quan-thu-vien/), bạn đóng vai trò người tư vấn quy trình / BA chủ chốt chuẩn bị tài liệu trình Ban Giám hiệu trước khi khởi động dự án. Hãy hoàn thành 3 nhiệm vụ:
+
+### Nhiệm vụ 1: Chọn và bảo vệ mô hình SDLC
+1. Đánh giá dự án LibCore theo **5 tiêu chí** đã học ở M1.3.
+2. Đề xuất **1 mô hình SDLC phù hợp nhất** cho LibCore và giải thích rõ **vì sao không chọn Waterfall thuần 6 tháng** và **vì sao không chọn Kanban thuần**.
+3. Chỉ ra **2 rủi ro** đi kèm mô hình bạn chọn và đề xuất cách phòng ngừa.
+
+### Nhiệm vụ 2: Lập bảng RACI cho 5 hoạt động cốt lõi
+Với 5 vai trò tham gia: **Giám đốc Thư viện (PO)**, **PM**, **BA**, **Tech Lead**, **QA Lead**, hãy lập bảng RACI cho 5 hoạt động:
+1. Chốt danh sách yêu cầu và thứ tự ưu tiên giữa Đợt 1 (tháng 4) và Đợt 2 (tháng 6).
+2. Soạn thảo tài liệu đặc tả chi tiết & luồng nghiệp vụ mượn/trả.
+3. Thiết kế kiến trúc hệ thống và tích hợp đăng nhập SSO.
+4. Lập kế hoạch kiểm thử và thực thi kiểm thử hệ thống.
+5. Nghiệm thu UAT và ký xác nhận đưa hệ thống vào chạy thật dịp khai giảng.
+
+### Nhiệm vụ 3: Đề xuất Entry & Exit Criteria
+Viết ít nhất **2 Entry Criteria** và **3 Exit Criteria** cụ thể, đo lường được cho giai đoạn **Phân tích yêu cầu Đợt 1**.
+
+---
+
+## Tiêu chí tự chấm bài (Rubric Checklist)
+
+Sau khi tự viết xong, hãy tự đối chiếu bài làm của mình với bảng tiêu chí sau (trạng thái tick được tự động lưu):
+
+<Checklist
+  listId="cap1-project-rubric"
+  title="Rubric tự chấm Bài tập Cấp 1 (cần đạt tối thiểu 6/7 tiêu chí)"
+  items={[
+    "Đã phân tích đủ 5 tiêu chí (độ ổn định yêu cầu, rủi ro/an toàn, ràng buộc ngân sách & mốc thời gian, mức tham gia của nghiệp vụ, áp lực ra mắt sớm).",
+    "Chọn mô hình hợp lý (Hybrid: Quản trị mốc/ngân sách + Phát triển Incremental/Scrum, có kèm Prototyping cho cổng tra cứu) và lập luận chặt chẽ dựa trên dữ kiện đề bài.",
+    "Giải thích thuyết phục lý do loại Waterfall thuần (không kịp giao Đợt 1 ở tháng 4 và trễ phản hồi UI) và loại Kanban thuần (thiếu cam kết mốc khai giảng cố định).",
+    "Nêu được ít nhất 2 rủi ro cụ thể của mô hình đã chọn kèm biện pháp kiểm soát thực tế.",
+    "Bảng RACI tuân thủ nghiêm ngặt quy tắc: mỗi dòng có ít nhất 1 R và DUY NHẤT 1 A.",
+    "Phân định hợp lý giữa C (tham vấn 2 chiều) và I (thông báo 1 chiều) cho các vai trò kỹ thuật và quản trị.",
+    "Entry Criteria và Exit Criteria viết cụ thể, kiểm chứng được (không viết chung chung kiểu 'đã hiểu sơ bộ')."
+  ]}
+/>
+
+---
+
+## Đáp án mẫu tham khảo
+
+<details>
+<summary><strong>Bấm để xem Đáp án mẫu (chỉ mở sau khi bạn đã tự viết xong!)</strong></summary>
+
+### 1. Phân tích & Đề xuất mô hình SDLC
+- **Đánh giá 5 tiêu chí:**
+  1. *Độ ổn định yêu cầu:* Trung bình — lõi mượn/trả và mức phạt rõ ràng, nhưng UI cổng tra cứu & đặt giữ sách cần phản hồi thực tế để chỉnh dần.
+  2. *Rủi ro kỹ thuật:* Trung bình (có điểm cần kiểm chứng sớm là tích hợp SSO với hệ thống trường và tốc độ quét mã vạch tại quầy).
+  3. *Ràng buộc ngân sách & mốc:* Chặt chẽ — có trần ngân sách và mốc cứng khai giảng ở tháng thứ 4.
+  4. *Mức tham gia của nghiệp vụ:* Tốt (Giám đốc Thư viện & 2 thủ thư trưởng dành 3 giờ/tuần).
+  5. *Áp lực ra mắt sớm:* Cao — cần giao gói lõi ở tháng 4 rồi mở rộng ở tháng 6.
+- **Đề xuất:** **Hybrid (Quản trị mốc & ngân sách trần + Phát triển Incremental theo các Sprint Scrum 2 tuần, kết hợp Throwaway Prototyping cho cổng tra cứu sinh viên)**.
+  - *Vì sao không chọn Waterfall thuần 6 tháng?* Waterfall sẽ không kịp giao gói lõi vào tháng 4; hơn nữa sinh viên và thủ thư phải chờ cuối dự án mới thấy giao diện nên rủi ro sai luồng trải nghiệm rất lớn.
+  - *Vì sao không chọn Kanban thuần?* Dự án có mục tiêu phát hành theo 2 mốc rõ ràng (tháng 4 và tháng 6) với nhóm tính năng có thể lập kế hoạch trước theo Sprint, không phải luồng xử lý sự cố đột xuất hằng ngày.
+- **2 rủi ro & biện pháp phòng ngừa:**
+  1. *Rủi ro Scope Creep khi thủ thư góp ý mỗi Sprint:* Thiết lập nguyên tắc "đổi món tương đương" (nếu thêm tính năng mới vào Đợt 1 thì phải chuyển tính năng ưu tiên thấp sang Đợt 2 để bảo vệ mốc tháng 4).
+  2. *Rủi ro rơi vào Water-Scrum-Fall (dồn test về tuần cuối tháng 4):* Áp dụng Definition of Done bắt buộc mỗi Sprint đều phải kiểm thử tích hợp xong và demo trên môi trường giống thật.
+
+### 2. Bảng RACI tham khảo
+
+| Hoạt động | PO (GĐ Thư viện) | PM | BA | Tech Lead | QA Lead |
+|---|---|---|---|---|---|
+| 1. Chốt phạm vi & ưu tiên Đợt 1 / Đợt 2 | **A / R** | C | C | C | I |
+| 2. Soạn đặc tả & luồng nghiệp vụ mượn/trả | **A** | I | **R** | C | C |
+| 3. Thiết kế kiến trúc & tích hợp SSO | I | I | C | **A / R** | C |
+| 4. Lập Test Plan & thực thi System Test | I | I | C | C | **A / R** |
+| 5. Nghiệm thu UAT & ký Go-Live | **A / R** | I | C | I | C |
+
+*(Kiểm tra quy tắc vàng: mỗi dòng đều có duy nhất 1 chữ A và ít nhất 1 chữ R!)*
+
+### 3. Entry & Exit Criteria cho giai đoạn Phân tích yêu cầu Đợt 1
+- **Entry Criteria:**
+  1. Danh mục phạm vi cấp cao Đợt 1 (4 phân hệ lõi) đã được Ban Giám hiệu & PO ký thống nhất.
+  2. Lịch phỏng vấn và danh sách đầu mối đại diện thủ thư, Phòng CNTT (phụ trách SSO) đã được xác nhận.
+- **Exit Criteria:**
+  1. 100% tính năng Đợt 1 có User Story/đặc tả kèm tiêu chí chấp nhận (Acceptance Criteria) và không còn mục "TBD" ở luồng chính.
+  2. Tài liệu đặc tả đã được Tech Lead (kiểm tra tính khả thi kỹ thuật) và QA Lead (kiểm tra tính kiểm thử được) rà soát và đóng hết phản biện nghiêm trọng.
+  3. PO ký phê duyệt chốt Baseline Đợt 1 (`SRS/Backlog v1.0`).
+
+</details>

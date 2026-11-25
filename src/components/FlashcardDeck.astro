@@ -1,0 +1,302 @@
+---
+import { FLASHCARDS } from '../data/flashcards';
+
+const modules = Array.from(new Set(FLASHCARDS.map((f) => f.module)));
+const payload = JSON.stringify(FLASHCARDS);
+---
+
+<div class="sdlc-widget sdlc-flashcards" data-cards={payload}>
+  <div class="sdlc-widget-header">
+    <div>
+      <h3 class="sdlc-widget-title">Thẻ ghi nhớ ôn tập ngắt quãng (Spaced Repetition)</h3>
+      <p style="margin:0.35rem 0 0;font-size:0.88rem;opacity:0.85;">
+        Chu kỳ hộp Leitner: Ôn ngay → 1 ngày → 3 ngày → 7 ngày → 14 ngày → 30 ngày.
+      </p>
+    </div>
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;" data-fc-stats>
+      <span class="sdlc-badge" data-stat-due>Đến hạn: 0</span>
+      <span class="sdlc-badge sdlc-badge-pass" data-stat-mastered>Hộp 4–5: 0</span>
+    </div>
+  </div>
+
+  <div class="sdlc-fc-controls">
+    <select class="sdlc-fc-select" data-fc-mode aria-label="Chế độ lọc thẻ">
+      <option value="due">Chỉ thẻ đến hạn hôm nay</option>
+      <option value="all">Tất cả thẻ ({FLASHCARDS.length})</option>
+    </select>
+    <select class="sdlc-fc-select" data-fc-module aria-label="Lọc theo module">
+      <option value="all">Tất cả module</option>
+      {modules.map((m) => <option value={m}>{m}</option>)}
+    </select>
+  </div>
+
+  <div class="sdlc-fc-stage" data-fc-stage>
+    <div class="sdlc-fc-meta">
+      <span class="sdlc-badge" data-fc-mod-badge></span>
+      <span style="font-size:0.85rem;opacity:0.8;" data-fc-counter></span>
+    </div>
+
+    <div class="sdlc-fc-card" data-fc-card tabindex="0" role="button" aria-label="Lật thẻ">
+      <div class="sdlc-fc-side-label" data-fc-side-label>CÂU HỎI (Bấm vào thẻ để lật đáp án)</div>
+      <div class="sdlc-fc-text" data-fc-text></div>
+      <div class="sdlc-fc-hint" data-fc-hint hidden></div>
+    </div>
+
+    <div class="sdlc-fc-btn-row" data-fc-pre-flip>
+      <button type="button" class="sdlc-btn sdlc-btn-primary" data-fc-flip>Xem đáp án</button>
+      <button type="button" class="sdlc-btn" data-fc-show-hint hidden>Gợi ý</button>
+    </div>
+
+    <div class="sdlc-fc-btn-row" data-fc-post-flip hidden>
+      <button type="button" class="sdlc-btn sdlc-rate-again" data-rate="again">Chưa nhớ (ôn lại ngay)</button>
+      <button type="button" class="sdlc-btn sdlc-rate-good" data-rate="good">Nhớ tốt (+1 hộp)</button>
+      <button type="button" class="sdlc-btn sdlc-rate-easy" data-rate="easy">Rất chắc (+2 hộp)</button>
+    </div>
+  </div>
+
+  <div class="sdlc-fc-empty" data-fc-empty hidden>
+    <strong>Bạn đã hoàn thành toàn bộ thẻ đến hạn hôm nay!</strong>
+    <p style="margin:0.4rem 0 0;">Chuyển chế độ sang "Tất cả thẻ" nếu bạn muốn ôn thêm chủ động.</p>
+  </div>
+</div>
+
+<style>
+  .sdlc-fc-controls {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+  .sdlc-fc-select {
+    padding: 0.48rem 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--sdlc-border);
+    background: var(--sl-color-bg);
+    color: var(--sl-color-text);
+    font-size: 0.9rem;
+  }
+  .sdlc-fc-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+  .sdlc-fc-card {
+    min-height: 185px;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    border: 2px solid var(--sdlc-border);
+    background: var(--sl-color-bg);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.75rem;
+    transition: border-color 0.15s ease;
+  }
+  .sdlc-fc-card:hover {
+    border-color: var(--sl-color-accent);
+  }
+  .sdlc-fc-card.is-flipped {
+    border-color: var(--sdlc-success);
+  }
+  .sdlc-fc-side-label {
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--sl-color-accent);
+    text-transform: uppercase;
+  }
+  .sdlc-fc-card.is-flipped .sdlc-fc-side-label {
+    color: var(--sdlc-success);
+  }
+  .sdlc-fc-text {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    font-weight: 500;
+  }
+  .sdlc-fc-hint {
+    font-size: 0.88rem;
+    padding: 0.55rem 0.75rem;
+    border-radius: 0.45rem;
+    background: var(--sdlc-warn-bg);
+    color: var(--sl-color-text);
+  }
+  .sdlc-fc-btn-row {
+    display: flex;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+  .sdlc-rate-again {
+    border-color: var(--sdlc-danger);
+    color: var(--sdlc-danger);
+  }
+  .sdlc-rate-good {
+    border-color: var(--sl-color-accent);
+    color: var(--sl-color-accent);
+  }
+  .sdlc-rate-easy {
+    border-color: var(--sdlc-success);
+    color: var(--sdlc-success);
+  }
+  .sdlc-fc-empty {
+    padding: 1.5rem;
+    text-align: center;
+    border-radius: 0.65rem;
+    background: var(--sdlc-success-bg);
+    border: 1px solid var(--sdlc-success);
+  }
+</style>
+
+<script>
+  import { loadProgress, recordFlashcardReview, SRS_INTERVALS_DAYS } from '../lib/progress';
+  import type { FlashcardItem } from '../data/flashcards';
+
+  document.querySelectorAll<HTMLElement>('.sdlc-flashcards').forEach((root) => {
+    if (root.dataset.bound === '1') return;
+    root.dataset.bound = '1';
+
+    const allCards: FlashcardItem[] = JSON.parse(root.dataset.cards || '[]');
+    const modeSel = root.querySelector<HTMLSelectElement>('[data-fc-mode]');
+    const modSel = root.querySelector<HTMLSelectElement>('[data-fc-module]');
+    const stageEl = root.querySelector<HTMLElement>('[data-fc-stage]');
+    const emptyEl = root.querySelector<HTMLElement>('[data-fc-empty]');
+    const cardEl = root.querySelector<HTMLElement>('[data-fc-card]');
+    const modBadge = root.querySelector<HTMLElement>('[data-fc-mod-badge]');
+    const counterEl = root.querySelector<HTMLElement>('[data-fc-counter]');
+    const sideLabel = root.querySelector<HTMLElement>('[data-fc-side-label]');
+    const textEl = root.querySelector<HTMLElement>('[data-fc-text]');
+    const hintEl = root.querySelector<HTMLElement>('[data-fc-hint]');
+    const showHintBtn = root.querySelector<HTMLButtonElement>('[data-fc-show-hint]');
+    const flipBtn = root.querySelector<HTMLButtonElement>('[data-fc-flip]');
+    const preFlip = root.querySelector<HTMLElement>('[data-fc-pre-flip]');
+    const postFlip = root.querySelector<HTMLElement>('[data-fc-post-flip]');
+    const statDue = root.querySelector<HTMLElement>('[data-stat-due]');
+    const statMastered = root.querySelector<HTMLElement>('[data-stat-mastered]');
+
+    let queue: FlashcardItem[] = [];
+    let currentIndex = 0;
+    let flipped = false;
+
+    const getDueCards = (cards: FlashcardItem[]) => {
+      const state = loadProgress();
+      const now = Date.now();
+      return cards.filter((c) => {
+        const rec = state.flashcards[c.id];
+        return !rec || rec.nextReviewAt <= now;
+      });
+    };
+
+    const updateStats = () => {
+      const state = loadProgress();
+      const now = Date.now();
+      let due = 0;
+      let mastered = 0;
+      allCards.forEach((c) => {
+        const rec = state.flashcards[c.id];
+        if (!rec || rec.nextReviewAt <= now) due++;
+        if (rec && rec.box >= 4) mastered++;
+      });
+      if (statDue) statDue.textContent = `Đến hạn: ${due}/${allCards.length}`;
+      if (statMastered) statMastered.textContent = `Nhớ vững (Hộp 4–5): ${mastered}`;
+    };
+
+    const rebuildQueue = () => {
+      const mod = modSel?.value ?? 'all';
+      const mode = modeSel?.value ?? 'due';
+      let list = mod === 'all' ? allCards : allCards.filter((c) => c.module === mod);
+      if (mode === 'due') {
+        list = getDueCards(list);
+      }
+      queue = list;
+      currentIndex = 0;
+      flipped = false;
+      renderCard();
+    };
+
+    const renderCard = () => {
+      updateStats();
+      if (queue.length === 0) {
+        if (stageEl) stageEl.hidden = true;
+        if (emptyEl) emptyEl.hidden = false;
+        return;
+      }
+      if (stageEl) stageEl.hidden = false;
+      if (emptyEl) emptyEl.hidden = true;
+
+      if (currentIndex >= queue.length) currentIndex = 0;
+      const card = queue[currentIndex];
+      const state = loadProgress();
+      const rec = state.flashcards[card.id];
+      const box = rec?.box ?? 0;
+
+      if (modBadge) modBadge.textContent = `${card.module} · Hộp ${box} (${SRS_INTERVALS_DAYS[box]} ngày)`;
+      if (counterEl) counterEl.textContent = `Thẻ ${currentIndex + 1} / ${queue.length}`;
+
+      cardEl?.classList.toggle('is-flipped', flipped);
+      if (sideLabel) {
+        sideLabel.textContent = flipped
+          ? 'ĐÁP ÁN CHUẨN (Hãy tự đánh giá mức độ nhớ của bạn)'
+          : 'CÂU HỎI (Hãy tự trả lời trong đầu trước khi lật)';
+      }
+      if (textEl) textEl.textContent = flipped ? card.back : card.front;
+
+      if (hintEl) {
+        hintEl.hidden = true;
+        hintEl.textContent = card.hint ? `Gợi ý: ${card.hint}` : '';
+      }
+      if (showHintBtn) {
+        showHintBtn.hidden = !card.hint || flipped;
+      }
+      if (preFlip) preFlip.hidden = flipped;
+      if (postFlip) postFlip.hidden = !flipped;
+    };
+
+    const doFlip = () => {
+      flipped = !flipped;
+      renderCard();
+    };
+
+    flipBtn?.addEventListener('click', doFlip);
+    cardEl?.addEventListener('click', doFlip);
+    cardEl?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        doFlip();
+      }
+    });
+
+    showHintBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (hintEl) hintEl.hidden = false;
+    });
+
+    root.querySelectorAll<HTMLButtonElement>('[data-rate]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const rating = btn.dataset.rate as 'again' | 'good' | 'easy';
+        const card = queue[currentIndex];
+        if (!card) return;
+        recordFlashcardReview(card.id, rating);
+
+        if (modeSel?.value === 'due') {
+          if (rating === 'again') {
+            // Move card to end of current due queue
+            queue.push(queue.splice(currentIndex, 1)[0]);
+          } else {
+            queue.splice(currentIndex, 1);
+          }
+        } else {
+          currentIndex = (currentIndex + 1) % queue.length;
+        }
+        flipped = false;
+        renderCard();
+      });
+    });
+
+    modeSel?.addEventListener('change', rebuildQueue);
+    modSel?.addEventListener('change', rebuildQueue);
+
+    rebuildQueue();
+  });
+</script>

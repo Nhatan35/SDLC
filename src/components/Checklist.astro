@@ -1,0 +1,76 @@
+---
+interface Props {
+  listId: string;
+  title?: string;
+  items: string[];
+}
+
+const { listId, title = 'Tiêu chí tự kiểm tra (Rubric Checklist)', items } = Astro.props;
+---
+
+<div class="sdlc-widget sdlc-checklist" data-list-id={listId}>
+  <div class="sdlc-widget-header">
+    <h4 class="sdlc-widget-title">{title}</h4>
+    <span class="sdlc-badge" data-cl-count>0 / {items.length}</span>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:0.5rem;">
+    {items.map((item, idx) => (
+      <label class="sdlc-cl-row">
+        <input type="checkbox" value={`item-${idx}`} />
+        <span>{item}</span>
+      </label>
+    ))}
+  </div>
+</div>
+
+<style>
+  .sdlc-cl-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    padding: 0.5rem 0.7rem;
+    border-radius: 0.45rem;
+    border: 1px solid var(--sdlc-border);
+    background: var(--sl-color-bg);
+    cursor: pointer;
+    font-size: 0.92rem;
+    line-height: 1.45;
+  }
+  .sdlc-cl-row input {
+    margin-top: 0.22rem;
+    flex-shrink: 0;
+  }
+</style>
+
+<script>
+  import { loadProgress, toggleChecklistItem } from '../lib/progress';
+
+  document.querySelectorAll<HTMLElement>('.sdlc-checklist').forEach((root) => {
+    if (root.dataset.bound === '1') return;
+    root.dataset.bound = '1';
+
+    const listId = root.dataset.listId ?? '';
+    const countEl = root.querySelector<HTMLElement>('[data-cl-count]');
+    const boxes = Array.from(root.querySelectorAll<HTMLInputElement>('input[type="checkbox"]'));
+
+    const update = () => {
+      const done = boxes.filter((b) => b.checked).length;
+      if (countEl) {
+        countEl.textContent = `${done} / ${boxes.length}`;
+        countEl.classList.toggle('sdlc-badge-pass', done === boxes.length && boxes.length > 0);
+      }
+    };
+
+    const state = loadProgress();
+    const saved = new Set(state.completedChecklists[listId] ?? []);
+    boxes.forEach((b) => {
+      b.checked = saved.has(b.value);
+      b.addEventListener('change', () => {
+        toggleChecklistItem(listId, b.value, b.checked);
+        update();
+      });
+    });
+
+    update();
+  });
+</script>

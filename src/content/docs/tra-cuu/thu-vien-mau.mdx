@@ -1,0 +1,170 @@
+---
+title: Thư viện Mẫu tài liệu SDLC & Agile (Copy dùng ngay)
+description: "Bộ 8 mẫu tài liệu cốt lõi trong SDLC và Agile/Scrum (Elevator Statement, User Story + AC, DoR/DoD, RACI, Business Case, SRS rút gọn, Bug Report, Change Request) có thể sao chép và dùng ngay."
+---
+
+Mỗi mẫu dưới đây được thiết kế tinh gọn theo chuẩn quốc tế (ISO 29148, ISTQB CTFL v4.0, BABOK v3, Scrum Guide 2020 và *Agile Project Management For Dummies*). Bấm nút **Copy** ở góc trên phải từng khung mã để mang sang Word, Notion, Confluence hoặc Jira.
+
+---
+
+## 1. Mẫu Tuyên bố Tầm nhìn sản phẩm (Elevator Statement – *Agile For Dummies*)
+
+```markdown
+## PRODUCT VISION (ELEVATOR STATEMENT)
+- **Dành cho (Target Users):** [Nhóm khách hàng / người dùng mục tiêu]
+- **Những người đang cần (Need/Pain Point):** [Vấn đề cốt lõi cần giải quyết]
+- **Sản phẩm (Product Name):** [Tên sản phẩm] là một [danh mục/loại giải pháp]
+- **Mang lại lợi ích (Key Benefit):** [Giá trị định lượng hoặc lợi ích lớn nhất]
+- **Khác với (Current Alternative):** [Cách làm hiện tại / đối thủ chính]
+- **Sản phẩm của chúng ta (Differentiator):** [Điểm khác biệt then chốt]
+
+### Chỉ số thành công (Success Metrics)
+1. [KPI 1 — ví dụ: Giảm thời gian xử lý từ X xuống Y]
+2. [KPI 2 — ví dụ: Tỷ lệ người dùng hoạt động đạt ≥ Z%]
+```
+
+---
+
+## 2. Mẫu User Story (INVEST) & Tiêu chí chấp nhận (Given / When / Then)
+
+```markdown
+### [US-XXX] Tên ngắn gọn của User Story
+**Là một** [Vai trò người dùng],
+**Tôi muốn** [Hành động / Tính năng],
+**Để** [Giá trị nghiệp vụ đạt được].
+
+**Ưu tiên (MoSCoW):** Must / Should / Could | **Ước lượng:** [X] Story Points
+
+#### Tiêu chí chấp nhận (Acceptance Criteria)
+- **Kịch bản 1 (Luồng chính – Happy Path):**
+  - **Given** [Điều kiện ban đầu / dữ liệu sẵn có]
+  - **When** [Người dùng thực hiện hành động]
+  - **Then** [Hệ thống phản hồi / thay đổi trạng thái cụ thể]
+
+- **Kịch bản 2 (Ngoại lệ / Ràng buộc):**
+  - **Given** [Điều kiện biên hoặc vi phạm quy tắc]
+  - **When** [Hành động xảy ra]
+  - **Then** [Hệ thống chặn / hiển thị thông báo lỗi cụ thể "..."]
+
+#### Yêu cầu phi chức năng kèm theo (nếu có)
+- Thời gian phản hồi ≤ [X] giây | Quyền truy cập: chỉ vai trò [Y].
+```
+
+---
+
+## 3. Mẫu Definition of Ready (DoR) & Definition of Done (DoD)
+
+```markdown
+## DEFINITION OF READY (Hướng dẫn đầu vào Sprint)
+- [ ] User Story rõ cấu trúc Vai trò – Hành động – Giá trị.
+- [ ] Đã có đầy đủ Tiêu chí chấp nhận (Given/When/Then) cho luồng chính & ngoại lệ chính.
+- [ ] Đã có thiết kế giao diện / wireframe (nếu có UI).
+- [ ] Đã xác định rõ phụ thuộc kỹ thuật / API bên thứ ba.
+- [ ] Đã ước lượng và đủ nhỏ để hoàn thành trong 1 Sprint (≤ 8 Story Points).
+
+## DEFINITION OF DONE (Cam kết đầu ra Increment)
+- [ ] Mã nguồn đã qua Pull Request Review bởi ít nhất 1 lập trình viên khác.
+- [ ] Unit Test & Integration Test đạt 100% trên pipeline CI (không phá tính năng cũ).
+- [ ] Đã kiểm thử đạt 100% Tiêu chí chấp nhận; 0 lỗi mức Blocker / Critical / High.
+- [ ] Đã kiểm tra bảo mật cơ bản & hiển thị trên kích thước màn hình mục tiêu.
+- [ ] Đã triển khai ổn định trên môi trường Staging, sẵn sàng demo tại Sprint Review.
+- [ ] Tài liệu API / Ghi chú phát hành (Release Note) đã được cập nhật.
+```
+
+---
+
+## 4. Mẫu Ma trận RACI
+
+```markdown
+| Hoạt động / Tài liệu đầu ra | Sponsor / PO | PM | BA | Tech Lead | QA Lead |
+|---|:---:|:---:|:---:|:---:|:---:|
+| 1. Phê duyệt Business Case & Phạm vi | A | R | C | C | I |
+| 2. Lập đặc tả yêu cầu (SRS / Backlog) | A | I | R | C | C |
+| 3. Thiết kế kiến trúc & DB | I | I | C | A/R | C |
+| 4. Lập Test Plan & Kiểm thử hệ thống | I | I | C | C | A/R |
+| 5. Ký nghiệm thu UAT & Go-Live | A/R | I | C | I | C |
+
+*(Quy tắc bắt buộc: Mỗi dòng có ít nhất 1 R và DUY NHẤT 1 A.)*
+```
+
+---
+
+## 5. Mẫu Business Case rút gọn (Giai đoạn Lập kế hoạch)
+
+```markdown
+# BUSINESS CASE: [TÊN DỰ ÁN]
+1. **Vấn đề hiện tại & Cơ hội:** [Mô tả nỗi đau hiện có kèm số liệu cụ thể]
+2. **Mục tiêu đo lường được (SMART):** [Ví dụ: Giảm 50% thời gian xử lý trong 6 tháng]
+3. **Các phương án xem xét:**
+   - Phương án A: Giữ nguyên hiện trạng (rủi ro gì?)
+   - Phương án B: Tự xây dựng (chi phí, thời gian, ưu/nhược)
+   - Phương án C: Mua gói có sẵn & cấu hình (chi phí, thời gian, ưu/nhược)
+4. **Đánh giá khả thi (TELOS):** Kỹ thuật · Kinh tế (ROI / Thời gian hoàn vốn) · Pháp lý · Vận hành · Tiến độ
+5. **Phạm vi In-Scope / Out-of-Scope:** [Nêu rõ cái KHÔNG làm để chặn Scope Creep]
+6. **Rủi ro chính & Phương án giảm thiểu:** [Top 3 rủi ro]
+7. **Đề xuất & Phê duyệt:** [Sponsor ký duyệt]
+```
+
+---
+
+## 6. Mẫu Báo cáo lỗi chuẩn ISTQB (Bug / Defect Report)
+
+```markdown
+### [BUG-XXX] Tóm tắt ngắn gọn: [Hành động] gây [Lỗi gì] trên [Màn hình nào]
+- **Môi trường:** Staging v1.2.0 | Chrome 130 | Windows 11
+- **Severity (Mức nghiêm trọng kỹ thuật):** Critical / High / Medium / Low
+- **Priority (Mức ưu tiên sửa theo nghiệp vụ):** P1 (Khẩn) / P2 / P3 / P4
+- **Yêu cầu / Test Case liên quan:** US-104 / TC-018
+
+#### Điều kiện ban đầu (Preconditions)
+- Đăng nhập tài khoản Thủ thư `librarian_test_01`.
+- Sinh viên `SV001` hiện đang mượn đúng 5 cuốn sách chưa trả.
+
+#### Các bước tái hiện (Steps to Reproduce)
+1. Vào menu **Mượn sách** → nhập mã bạn đọc `SV001`.
+2. Quét mã sách thứ 6 (`ISBN-978-0134494166`).
+3. Bấm nút **Xác nhận tạo phiếu**.
+
+#### Kết quả thực tế (Actual Result)
+Hệ thống vẫn tạo thành công phiếu mượn thứ 6 và không hiện cảnh báo.
+
+#### Kết quả mong đợi (Expected Result)
+Hệ thống chặn tạo phiếu và hiển thị thông báo: "Bạn đọc đã đạt giới hạn tối đa 5 cuốn đang mượn".
+
+#### Bằng chứng đính kèm
+- Ảnh chụp màn hình / Video / Log API (HTTP status & response).
+```
+
+---
+
+## 7. Mẫu Yêu cầu Thay đổi (Change Request – CR)
+
+```markdown
+# CHANGE REQUEST: [CR-XXX]
+- **Người đề xuất:** [Tên / Bộ phận] | **Ngày gửi:** YYYY-MM-DD
+- **Mô tả thay đổi mong muốn:** [Cần thêm / sửa / bỏ gì so với Baseline hiện tại?]
+- **Lý do nghiệp vụ:** [Vì sao thay đổi này cần thiết ngay bây giờ?]
+- **Đánh giá tác động (Impact Analysis):**
+  - *Yêu cầu / Tài liệu ảnh hưởng:* [ID yêu cầu trong RTM]
+  - *Ảnh hưởng kỹ thuật & Kiểm thử:* [Module ảnh hưởng, số ngày công ước tính]
+  - *Ảnh hưởng tiến độ & Chi phí:* [+X ngày / +Y chi phí, hoặc đổi chỗ với hạng mục Z]
+  - *Rủi ro nếu làm / nếu không làm:* [...]
+- **Quyết định của Hội đồng kiểm soát thay đổi (CCB / PO):**
+  - [ ] Phê duyệt làm ngay (đổi chỗ với: ...)
+  - [ ] Phê duyệt đưa vào Release sau
+  - [ ] Từ chối (Lý do: ...)
+```
+
+---
+
+## 8. Mẫu Checklist Go-Live & Rollback
+
+```markdown
+## CHECKLIST TRIỂN KHAI (GO-LIVE)
+- [ ] Biên bản nghiệm thu UAT đã được đại diện nghiệp vụ ký xác nhận.
+- [ ] Đã sao lưu đầy đủ cơ sở dữ liệu & cấu hình hiện tại (Backup verified).
+- [ ] Đã kiểm tra kịch bản chuyển đổi dữ liệu (Data Migration dry-run thành công).
+- [ ] Tài liệu HDSD & đào tạo người dùng cốt lõi đã hoàn tất.
+- [ ] Đã chuẩn bị **Kế hoạch quay lui (Rollback Plan)** và mốc thời gian quyết định (Go / No-Go).
+- [ ] Lịch trực hỗ trợ sau Go-Live (Hypercare 1–2 tuần) & kênh báo sự cố đã thông báo rõ.
+```

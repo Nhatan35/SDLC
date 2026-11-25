@@ -1,0 +1,13 @@
+---
+import { GLOSSARY } from '../data/glossary';
+
+interface Props {
+  id: string;
+}
+
+const { id } = Astro.props;
+const entry = GLOSSARY.find((g) => g.id === id);
+const titleText = entry ? `${entry.en} (${entry.vi}): ${entry.definition}` : '';
+---
+
+<abbr class="sdlc-term" title={titleText}><slot /></abbr>

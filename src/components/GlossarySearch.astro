@@ -1,0 +1,125 @@
+---
+import { GLOSSARY } from '../data/glossary';
+
+const categories = Array.from(new Set(GLOSSARY.map((g) => g.category)));
+---
+
+<div class="sdlc-widget sdlc-glossary">
+  <div class="sdlc-glossary-bar">
+    <input
+      type="search"
+      class="sdlc-glossary-input"
+      placeholder="Tìm thuật ngữ tiếng Anh hoặc tiếng Việt (ví dụ: Waterfall, RACI, Baseline, WIP)..."
+      data-gl-search
+    />
+    <select class="sdlc-glossary-select" data-gl-cat aria-label="Lọc theo nhóm">
+      <option value="all">Tất cả nhóm ({GLOSSARY.length})</option>
+      {categories.map((cat) => <option value={cat}>{cat}</option>)}
+    </select>
+  </div>
+
+  <div style="font-size:0.86rem;opacity:0.8;margin-bottom:0.85rem;" data-gl-count>
+    Hiển thị {GLOSSARY.length} / {GLOSSARY.length} thuật ngữ
+  </div>
+
+  <div class="sdlc-glossary-list" data-gl-list>
+    {GLOSSARY.map((item) => (
+      <article
+        class="sdlc-gl-item"
+        data-cat={item.category}
+        data-search={`${item.en} ${item.vi} ${item.definition}`.toLowerCase()}
+      >
+        <div class="sdlc-gl-head">
+          <div>
+            <strong class="sdlc-gl-en">{item.en}</strong>
+            <span class="sdlc-gl-vi"> — {item.vi}</span>
+          </div>
+          <span class="sdlc-badge">{item.category}</span>
+        </div>
+        <p style="margin:0.45rem 0 0.35rem;font-size:0.93rem;">{item.definition}</p>
+        <div style="font-size:0.8rem;opacity:0.75;">Nguồn: {item.source}</div>
+      </article>
+    ))}
+  </div>
+</div>
+
+<style>
+  .sdlc-glossary-bar {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.85rem;
+  }
+  .sdlc-glossary-input {
+    flex: 1 1 260px;
+    padding: 0.55rem 0.85rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--sdlc-border);
+    background: var(--sl-color-bg);
+    color: var(--sl-color-text);
+    font-size: 0.93rem;
+  }
+  .sdlc-glossary-select {
+    padding: 0.55rem 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--sdlc-border);
+    background: var(--sl-color-bg);
+    color: var(--sl-color-text);
+    font-size: 0.9rem;
+  }
+  .sdlc-glossary-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .sdlc-gl-item {
+    padding: 0.95rem 1.1rem;
+    border-radius: 0.65rem;
+    border: 1px solid var(--sdlc-border);
+    background: var(--sl-color-bg);
+  }
+  .sdlc-gl-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .sdlc-gl-en {
+    color: var(--sl-color-accent);
+  }
+  .sdlc-gl-vi {
+    font-weight: 600;
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.sdlc-glossary').forEach((root) => {
+    if (root.dataset.bound === '1') return;
+    root.dataset.bound = '1';
+
+    const searchInput = root.querySelector<HTMLInputElement>('[data-gl-search]');
+    const catSel = root.querySelector<HTMLSelectElement>('[data-gl-cat]');
+    const countEl = root.querySelector<HTMLElement>('[data-gl-count]');
+    const items = Array.from(root.querySelectorAll<HTMLElement>('.sdlc-gl-item'));
+
+    const filter = () => {
+      const q = (searchInput?.value ?? '').trim().toLowerCase();
+      const cat = catSel?.value ?? 'all';
+      let shown = 0;
+
+      items.forEach((el) => {
+        const matchCat = cat === 'all' || el.dataset.cat === cat;
+        const matchQ = !q || (el.dataset.search ?? '').includes(q);
+        const visible = matchCat && matchQ;
+        el.hidden = !visible;
+        if (visible) shown++;
+      });
+
+      if (countEl) countEl.textContent = `Hiển thị ${shown} / ${items.length} thuật ngữ`;
+    };
+
+    searchInput?.addEventListener('input', filter);
+    catSel?.addEventListener('change', filter);
+  });
+</script>

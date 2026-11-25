@@ -1,0 +1,120 @@
+---
+interface Props {
+  id: string;
+  question: string;
+  options: string[];
+  correctIndex: number;
+  explanation: string;
+}
+
+const { id, question, options, correctIndex, explanation } = Astro.props;
+---
+
+<div
+  class="sdlc-quickcheck"
+  data-qc-id={id}
+  data-correct={correctIndex}
+  data-explanation={explanation}
+>
+  <div class="sdlc-qc-label">Tự kiểm tra nhanh (Active Recall)</div>
+  <p class="sdlc-qc-q">{question}</p>
+  <div class="sdlc-qc-opts">
+    {options.map((opt, idx) => (
+      <button type="button" class="sdlc-qc-opt" data-idx={idx}>
+        <span class="sdlc-qc-letter">{String.fromCharCode(65 + idx)}.</span>
+        <span>{opt}</span>
+      </button>
+    ))}
+  </div>
+  <div class="sdlc-qc-fb" hidden></div>
+</div>
+
+<style>
+  .sdlc-quickcheck {
+    margin: 1.35rem 0;
+    padding: 1.1rem 1.25rem;
+    border-radius: 0.7rem;
+    border: 1px solid var(--sdlc-border);
+    border-left: 4px solid var(--sl-color-accent);
+    background: var(--sdlc-card-bg);
+  }
+  .sdlc-qc-label {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--sl-color-accent);
+    margin-bottom: 0.4rem;
+  }
+  .sdlc-qc-q {
+    margin: 0 0 0.75rem !important;
+    font-weight: 600;
+  }
+  .sdlc-qc-opts {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+  .sdlc-qc-opt {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    text-align: left;
+    padding: 0.55rem 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--sdlc-border);
+    background: var(--sl-color-bg);
+    color: var(--sl-color-text);
+    cursor: pointer;
+    font-size: 0.92rem;
+    line-height: 1.45;
+  }
+  .sdlc-qc-opt:hover {
+    border-color: var(--sl-color-accent);
+  }
+  .sdlc-qc-letter {
+    font-weight: 700;
+    color: var(--sl-color-accent);
+  }
+  .sdlc-qc-opt.is-correct {
+    border-color: var(--sdlc-success);
+    background: var(--sdlc-success-bg);
+  }
+  .sdlc-qc-opt.is-wrong {
+    border-color: var(--sdlc-danger);
+    background: var(--sdlc-danger-bg);
+  }
+  .sdlc-qc-fb {
+    margin-top: 0.75rem;
+    padding: 0.65rem 0.85rem;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    background: var(--sl-color-bg);
+    border: 1px solid var(--sdlc-border);
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.sdlc-quickcheck').forEach((box) => {
+    if (box.dataset.bound === '1') return;
+    box.dataset.bound = '1';
+    const correctIdx = Number(box.dataset.correct);
+    const explanation = box.dataset.explanation ?? '';
+    const fb = box.querySelector<HTMLElement>('.sdlc-qc-fb');
+    const btns = Array.from(box.querySelectorAll<HTMLButtonElement>('.sdlc-qc-opt'));
+
+    btns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const idx = Number(btn.dataset.idx);
+        btns.forEach((b) => b.classList.remove('is-correct', 'is-wrong'));
+        btns[correctIdx]?.classList.add('is-correct');
+        const ok = idx === correctIdx;
+        if (!ok) btn.classList.add('is-wrong');
+        if (fb) {
+          fb.hidden = false;
+          fb.innerHTML = `<strong>${ok ? 'Chuẩn xác!' : 'Chưa đúng.'}</strong> ${explanation}`;
+        }
+      });
+    });
+  });
+</script>

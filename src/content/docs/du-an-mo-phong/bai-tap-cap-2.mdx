@@ -1,0 +1,78 @@
+---
+title: "Bài tập Cấp 2: Hồ sơ trọn 7 giai đoạn cho Dự án LibCore"
+description: "Thực hành tạo bộ tài liệu cốt lõi của Cấp 2 cho Hệ thống Thư viện LibCore: NFR chuẩn ISO 25010, Phân tích Giá trị biên & Bảng quyết định ISTQB, Chiến lược Go-Live và Phân loại Bảo trì."
+---
+
+import Checklist from '../../../components/Checklist.astro';
+
+:::note[Hướng dẫn thực hành]
+Hãy tự hoàn thành cả 4 nhiệm vụ bên dưới trong **30–40 phút** trước khi mở **Đáp án mẫu** để tự chấm theo Rubric!
+:::
+
+## Đề bài thực hành trên Dự án Thư viện LibCore
+
+### Nhiệm vụ 1: Viết Yêu cầu Phi chức năng chuẩn ISO/IEC 25010 (Đo kiểm được)
+Viết **3 Yêu cầu Phi chức năng (NFR)** cụ thể, có con số đo lường được cho LibCore thuộc 3 nhóm:
+1. **Hiệu năng (Performance Efficiency)** cho màn hình tra cứu sách.
+2. **Bảo mật (Security)** cho phân quyền miễn/giảm tiền phạt & phiên đăng nhập.
+3. **Độ tin cậy (Reliability)** trong giờ mở cửa thư viện.
+
+### Nhiệm vụ 2: Thiết kế Test Case chuẩn ISTQB (BVA + Decision Table)
+Quy chế mới của LibCore:
+- Tiền phạt áp dụng khi số ngày trễ hạn nằm trong khoảng **1 đến 30 ngày** (từ ngày 31 trở đi tự động khóa thẻ và chuyển sang quy trình xử lý mất sách).
+- Hãy xác định **bộ giá trị biên 2 điểm (2-value BVA)** cho miền `1..30 ngày` (gồm bao nhiêu giá trị, là những số nào?).
+- Viết nhanh **2 Test Case** (1 hợp lệ, 1 bất hợp lệ) kiểm tra luồng chuyển trạng thái của cuốn sách (`SanSang` / `DangMuon` / `ThanhLy`).
+
+### Nhiệm vụ 3: Đề xuất Chiến lược Go-Live & Kế hoạch Rollback
+Thư viện có 2 cơ sở: Cơ sở 2 nhỏ hơn (2.000 sinh viên) và Cơ sở 1 chính (16.000 sinh viên). Bạn chọn **chiến lược Go-Live nào** (Big Bang / Pilot / Phased / Parallel / Blue-Green) cho đợt ra mắt đầu tiên và nêu **3 hạng mục bắt buộc trong kế hoạch Rollback** nếu có sự cố nghiêm trọng ngày khai giảng?
+
+### Nhiệm vụ 4: Phân loại 4 yêu cầu sau Go-Live theo 4 loại bảo trì
+Sau khi LibCore chạy 3 tháng, phát sinh 4 đầu việc sau — hãy gắn đúng nhãn (*Corrective / Adaptive / Perfective / Preventive*):
+1. Sửa lỗi không gửi được email nhắc hạn cho các tài khoản có dấu chấm trong tên email.
+2. Nâng cấp cơ sở dữ liệu PostgreSQL từ bản cũ sắp hết hỗ trợ bảo mật lên bản LTS mới để tránh rủi ro bảo mật năm sau.
+3. Cập nhật kết nối đăng nhập khi nhà trường chuyển từ hệ thống LDAP cũ sang Azure AD SSO.
+4. Thêm chức năng xuất thẻ thư viện dạng mã QR trên ứng dụng sinh viên.
+
+---
+
+## Rubric tự chấm bài
+
+<Checklist
+  listId="cap2-project-rubric"
+  title="Rubric tự chấm Bài tập Cấp 2 (cần đạt tối thiểu 5/6 tiêu chí)"
+  items={[
+    "Cả 3 yêu cầu phi chức năng (Hiệu năng, Bảo mật, Độ tin cậy) đều có ngưỡng số liệu đo kiểm được, không dùng từ mơ hồ ('nhanh', 'ổn định').",
+    "Xác định đúng 4 giá trị biên 2 điểm cho miền [1..30]: {0, 1, 30, 31}.",
+    "Viết được ít nhất 1 test case chuyển trạng thái hợp lệ và 1 test case chuyển trạng thái BẤT hợp lệ (ví dụ từ ThanhLy sang DangMuon phải bị chặn).",
+    "Chọn chiến lược Pilot (thí điểm ở Cơ sở 2 nhỏ trước 1–2 tuần rồi nhân rộng sang Cơ sở 1) hoặc Phased, giải thích rõ lý do giảm rủi ro.",
+    "Kế hoạch Rollback nêu đủ: bản sao lưu DB trước Cutover, mốc Go/No-Go rõ ràng, phương án vận hành dự phòng (chuyển về quy trình cũ/bản cũ) không mất dữ liệu giao dịch.",
+    "Phân loại chính xác 4/4 đầu việc sau Go-Live (1: Corrective, 2: Preventive, 3: Adaptive, 4: Perfective)."
+  ]}
+/>
+
+---
+
+## Đáp án mẫu tham khảo
+
+<details>
+<summary><strong>Bấm để xem Đáp án mẫu (chỉ mở sau khi bạn đã tự làm xong!)</strong></summary>
+
+1. **3 NFR chuẩn ISO 25010 mẫu:**
+   - *Hiệu năng:* Với 500 sinh viên tra cứu đồng thời giờ cao điểm đầu học kỳ, 95% truy vấn tìm sách theo tên/tác giả/ISBN trả kết quả trong `≤ 1,5 giây`.
+   - *Bảo mật:* Mọi phiên đăng nhập xác thực qua SSO OAuth2; chỉ vai trò `GiamDocThuVien` được gọi API miễn/giảm phạt và mọi thao tác miễn giảm phải ghi nhận vào Audit Log không thể chỉnh sửa (gồm User ID, thời gian, số tiền, lý do).
+   - *Độ tin cậy:* Độ sẵn sàng (uptime) đạt `≥ 99,5%` trong khung giờ phục vụ `07:00–21:00` hằng ngày; sao lưu dữ liệu tự động hằng đêm (RPO ≤ 24h) và thời gian khôi phục sau sự cố RTO ≤ 2 giờ.
+2. **ISTQB BVA & State Transition:**
+   - **2-value BVA cho miền `[1..30]`:** gồm 4 giá trị **`{0, 1, 30, 31}`** (`0`: chưa trễ hạn, không phạt; `1`: bắt đầu tính phạt 1 ngày; `30`: mức trần tính phạt thường; `31`: chuyển sang khóa thẻ & xử lý mất sách).
+   - **State Transition:**
+     - *Hợp lệ:* Sách trạng thái `SanSang` → quét mượn → đổi thành `DangMuon` (thành công).
+     - *Bất hợp lệ:* Sách trạng thái `ThanhLy` → gọi API tạo phiếu mượn → hệ thống chặn, trả HTTP `409 Conflict` và thông báo `"Cuốn sách đã thanh lý, không thể cho mượn"`.
+3. **Chiến lược Go-Live & Rollback:**
+   - Chọn **Pilot (Thí điểm)** tại Cơ sở 2 (2.000 sinh viên) trước 2 tuần để kiểm chứng thực tế quét mã vạch, SSO và dữ liệu chuyển đổi với bán kính rủi ro nhỏ; ổn định xong triển khai tiếp sang Cơ sở 1 (16.000 sinh viên).
+   - **Rollback Plan:** (1) Chụp bản sao lưu toàn bộ DB & dữ liệu cũ ngay trước giờ Cutover; (2) Chốt tiêu chí Go/No-Go rõ ràng (nếu lỗi nghiêm trọng không khắc phục được trong 2 giờ thì quay lui); (3) Dự phòng bản cũ ở chế độ sẵn sàng mở lại và mẫu ghi nhận mượn/trả tạm thời để không gián đoạn quầy phục vụ.
+4. **Phân loại 4 loại bảo trì:**
+   - (1) **Corrective** (sửa lỗi đang tồn tại).
+   - (2) **Preventive** (nâng cấp phòng ngừa lỗ hổng bảo mật tương lai).
+   - (3) **Adaptive** (thích ứng khi hạ tầng xác thực bên ngoài thay đổi sang Azure AD).
+   - (4) **Perfective** (bổ sung tính năng nâng cao trải nghiệm người dùng).
+
+</details>
